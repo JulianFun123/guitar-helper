@@ -7,7 +7,7 @@ import fretboard from './fretboard.svg?raw'
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <div class="max-w-[1200px] mx-auto ">
         <div class="flex flex-col items-center gap-5 pt-4 w-full mb-5">
-            <h1>Piano Helper</h1>
+            <h1 class="text-xl">Guitar Helper</h1>
             <div class="h-[10rem]">
                 ${piano}
             </div>
@@ -16,7 +16,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
             </div>
         </div>
         
-        <div class="flex gap-2 justify-center">
+        <div class="flex gap-5 justify-center mb-3">
             <div>
                 <span>Note:</span>
                 <select id="note-select" class="border rounded-md"></select>
@@ -28,6 +28,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
             <div>
                 <span>Colored:</span>
                 <input id="colored-checkbox" type="checkbox">
+            </div>
+            <div>
+                <span>Show all notes:</span>
+                <input id="show-all-notes-checkbox" type="checkbox">
             </div>
         </div>
         <div class="flex gap-2 justify-center" id="more-info">
@@ -65,6 +69,7 @@ const styleEl = document.getElementById('styling')!
 const noteSelect = document.getElementById('note-select')! as HTMLSelectElement
 const typeSelect = document.getElementById('type-select')! as HTMLSelectElement
 const coloredCheckBox = document.getElementById('colored-checkbox')! as HTMLInputElement
+const showAllNotesCheckBox = document.getElementById('show-all-notes-checkbox')! as HTMLInputElement
 const moreInfoDiv = document.getElementById('more-info')! as HTMLDivElement
 
 const resetStyling = () => styleEl.innerHTML = ''
@@ -146,9 +151,11 @@ const selected = () => {
 
     moreInfoDiv.innerHTML = ''
 
-    styleEl.innerHTML += NOTES.map(n => `.${n.replace('#', '\\#')}-Note {
-        opacity: 0;
-    }`).join('\n')
+    if (!showAllNotesCheckBox.checked) {
+        styleEl.innerHTML += NOTES.map(n => `.${n.replace('#', '\\#')}-Note {
+            opacity: 0;
+        }`).join('\n')
+    }
 
     const nextColor = () => {
         if (!coloredCheckBox.checked) return ['#FFF', '#000']
@@ -221,5 +228,6 @@ typeSelect.innerHTML = [
 noteSelect.addEventListener('change', selected)
 typeSelect.addEventListener('change', selected)
 coloredCheckBox.addEventListener('change', selected)
+showAllNotesCheckBox.addEventListener('change', selected)
 
 selected()
