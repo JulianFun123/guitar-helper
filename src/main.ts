@@ -5,7 +5,7 @@ import {NOTES} from "./notes/notes.ts";
 import {getMajorChord, getMajorScaleChords, getMinorScaleChords} from "./notes/chords.ts";
 import {getMajorScale, getMinorScale} from "./notes/scales.ts";
 import {guitarChordHighlightedHandler} from "./notes/guitarChordShapes.js";
-import GuitarChord from "./components/GuitarChord.js";
+import Chord from "./components/Chord.js";
 
 
 const TYPES = ['MAJOR_SCALE', 'MINOR_SCALE', 'MAJOR_CHORD', 'MINOR_CHORD'] as const;
@@ -82,7 +82,7 @@ html`
 
     ${computed(() => selectedType.value.includes('CHORD') ? html`
         <div class="flex gap-5 justify-center mb-3">
-            <${GuitarChord} selectedChord=${`${selectedNote.value}${selectedType.value === 'MINOR_CHORD' ? 'm' : ''}`} hideNotes=${hideNotes} isColored=${isColored} />
+            <${Chord} selectedChord=${`${selectedNote.value}${selectedType.value === 'MINOR_CHORD' ? 'm' : ''}`} hideNotes=${hideNotes} isColored=${isColored} />
         </div>
     ` : null, [selectedNote, selectedType])}
     
@@ -92,9 +92,11 @@ html`
                 <div class="bg-neutral-100 px-1 rounded-md group relative">
                     <span>${c}</span>
                     
-                    <div class="hidden z-10 group-hover:block absolute left-0 top-[20px] bg-white border rounded-xl p-3" style="transform: translateX(-50%)">
-                        <${GuitarChord} selectedChord=${c} hideNotes=${hideNotes} isColored=${isColored} />
-                    </div>
+                    <div class="hidden z-10 group-hover:block absolute left-0 top-0 p-4 pt-8" style="transform: translateX(-50%)">
+                        <div class="bg-white border rounded-xl p-3">
+                            <${Chord} selectedChord=${c} hideNotes=${hideNotes} isColored=${isColored} />
+                        </div>
+                    </div>    
                 </div>
             `)}
         </div>

@@ -4,7 +4,7 @@ import {Note} from "./Note.ts";
 import {playNote} from "../notes/note-tone.js";
 
 
-@CustomElement()
+@CustomElement('gh-piano')
 export default class Piano extends JDOMComponent {
 
     length = 12 * 3

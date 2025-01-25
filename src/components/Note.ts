@@ -19,6 +19,7 @@ export function Note(note: string, {isHighlighted = false, isColored = false, si
             @click.cancel=${() => {
                 playNote(sound, note, octave)
             }}
+            title=${`Note ${note}, Octave: ${octave}`}
         >
             <span class="font-600 block" style=${{fontSize: `${size / 1.8}px`}}>
                 ${note}

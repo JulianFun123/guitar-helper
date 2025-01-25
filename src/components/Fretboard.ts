@@ -3,7 +3,7 @@ import {getAfter, getAfterOctave, NotesType} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
 
 
-@CustomElement()
+@CustomElement('gh-fretboard')
 export default class Fretboard extends JDOMComponent {
 
     rows = 16

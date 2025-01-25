@@ -1,5 +1,4 @@
 import { html, JDOM, JDOMComponent, CustomElement, state, computed } from 'jdomjs'
-import {getAfter, getAfterOctave} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
 import {guitarChordHighlightedHandler} from "../notes/guitarChordShapes.js";
 import Fretboard from "./Fretboard.js";
@@ -9,8 +8,8 @@ import Piano from "./Piano.js";
 import {getMajorScale, getMinorScale} from "../notes/scales.js";
 
 
-@CustomElement()
-export default class GuitarChord extends Fretboard {
+@CustomElement('gh-chord')
+export default class Chord extends Fretboard {
     rows = 4
 
     selectedChord = 'G'
