@@ -1,4 +1,3 @@
-import './style.scss'
 import Fretboard from "./components/Fretboard.ts";
 import { html, state, watch } from 'jdomjs';
 import Piano from "./components/Piano.ts";

@@ -3,9 +3,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowJs": true,
+    "noEmit": true,
     "allowImportingTsExtensions": true,
-    "target": "ES5",
-    "lib": [ "es2017", "dom" ]
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "lib": [ "es2017", "dom" ],
   },
   "include": ["src"]
 }
