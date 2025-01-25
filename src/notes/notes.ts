@@ -9,21 +9,21 @@ export const NOTES = [
 ] as const
 
 export const NOTE_COLORS = {
-    'A': ['red-600', 'white'],
-    'A#': ['red-400', 'white'],
-    'B': ['blue-600', 'white'],
-    'C': ['green-600', 'white'],
-    'C#': ['green-400', 'white'],
-    'D': ['yellow-600', 'white'],
-    'D#': ['yellow-400', 'white'],
-    'E': ['cyan-600', 'white'],
-    'F': ['pink-600', 'white'],
-    'F#': ['pink-400', 'white'],
-    'G': ['indigo-600', 'white'],
-    'G#': ['indigo-400', 'white'],
+    'A': ['bg-red-600', 'text-white'],
+    'A#': ['bg-red-400', 'text-white'],
+    'B': ['bg-blue-600', 'text-white'],
+    'C': ['bg-green-600', 'text-white'],
+    'C#': ['bg-green-400', 'text-white'],
+    'D': ['bg-yellow-600', 'text-white'],
+    'D#': ['bg-yellow-400', 'text-white'],
+    'E': ['bg-cyan-600', 'text-white'],
+    'F': ['bg-pink-600', 'text-white'],
+    'F#': ['bg-pink-400', 'text-white'],
+    'G': ['bg-indigo-600', 'text-white'],
+    'G#': ['bg-indigo-400', 'text-white'],
 }
 
-export type NotesType = typeof NOTES
+export type NotesType = typeof NOTES[number];
 
 export const getAfter = (key: string, addition: number) => {
     const ind = NOTES.findIndex(k => k === key)
@@ -34,7 +34,17 @@ export const getAfter = (key: string, addition: number) => {
         newInd -= NOTES.length
     }
 
+    if (NOTES[newInd] === undefined) {
+        console.log(newInd)
+    }
+
     return NOTES[newInd]
+}
+export const getDistance = (first: string, second: string) => {
+    const firstInd = NOTES.findIndex(k => k === first)
+    const secondInd = NOTES.findIndex(k => k === second)
+
+    return Math.abs(firstInd - secondInd)
 }
 
 export const getAfterOctave = (key: string, addition: number, octave = 2) => {
