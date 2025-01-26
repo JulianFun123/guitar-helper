@@ -8,6 +8,21 @@ export const NOTES = [
     'G', 'G#'
 ] as const
 
+export const NOTE_NAMES = {
+    'A': 'A',
+    'A#': 'A# / Bb',
+    'B': 'B',
+    'C': 'C',
+    'C#': 'C# / Db',
+    'D': 'D',
+    'D#': 'D# / Eb',
+    'E': 'E',
+    'F': 'F',
+    'F#': 'F# / Gb',
+    'G': 'G',
+    'G#': 'G / Ab',
+}
+
 export const NOTE_COLORS = {
     'A': ['bg-red-600', 'text-white'],
     'A#': ['bg-red-400', 'text-white'],

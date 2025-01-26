@@ -19,6 +19,10 @@ export default class Fretboard extends JDOMComponent {
 
     allShownNotes: {note: NotesType, octave: number, row: number, col: number}[] = []
 
+    constructor() {
+        super();
+    }
+
     setup(){
         watch([this.highlighted], () => {
             this.allShownNotes = []
@@ -67,9 +71,11 @@ export default class Fretboard extends JDOMComponent {
         if (col === 0) return null;
         while (col > 12) col -= 12
 
+        const middleLine = Math.floor(this.baseNotes.length / 2)-1
+
         if (
-            ([3, 5, 7, 9].includes(col) && row === 2) ||
-            ([12].includes(col) && (row === 1 || row === 3))
+            ([3, 5, 7, 9].includes(col) && row === middleLine) ||
+            ([12].includes(col) && (row === middleLine-1 || row === middleLine+ 1 ))
         ) {
             return html`<div class="w-[20px] h-[20px] bg-black rounded-full" />`
         }

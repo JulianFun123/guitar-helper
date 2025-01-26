@@ -3,7 +3,7 @@ import {Note} from "./Note.ts";
 import {guitarChordHighlightedHandler} from "../notes/guitarChordShapes.js";
 import Fretboard from "./Fretboard.js";
 import {playNote} from "../notes/note-tone.js";
-import {getMajorChord, parseChord, ParsedChord} from "../notes/chords.js";
+import {getMajorChord, getMinorChord, parseChord, ParsedChord} from "../notes/chords.js";
 import Piano from "./Piano.js";
 import {getMajorScale, getMinorScale} from "../notes/scales.js";
 
@@ -36,7 +36,7 @@ export default class Chord extends Fretboard {
                 this.highlighted.value = getMajorChord(chord.baseNote)
                 break
             case 'MINOR':
-                this.highlighted.value = getMinorScale(chord.baseNote)
+                this.highlighted.value = getMinorChord(chord.baseNote)
                 break
         }
 
