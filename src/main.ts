@@ -4,10 +4,10 @@ import {Home} from "./views/Home.js";
 import {Tuner} from "./views/Tuner.js";
 
 
-export const savedParams = new URLSearchParams(window.location.hash.substring(1))
+export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
 
 export const saveParams = () => {
-    window.location.hash = `#${savedParams.toString()}`
+    localStorage.setItem("settings", savedParams.toString());
 }
 export const INSTRUMENTS = [
     ['GUITAR', 'Guitar', 'E,A,D,G,B,E'],
