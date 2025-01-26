@@ -19,6 +19,9 @@ export default class Fretboard extends JDOMComponent {
 
     allShownNotes: {note: NotesType, octave: number, row: number, col: number}[] = []
 
+
+    onNoteClick: (() => void)|undefined = undefined
+
     constructor() {
         super();
     }
@@ -31,7 +34,7 @@ export default class Fretboard extends JDOMComponent {
 
     fretboardNote(note: NotesType, octave = 2, row: number, col: number) {
         return computed(() => {
-            const isHighlighted = this.isHighlightedHandler ? this.isHighlightedHandler(row, col) : this.highlighted.value.includes(note)
+            const isHighlighted = this.isHighlightedHandler ? this.isHighlightedHandler(row, col, note, octave) : this.highlighted.value.includes(note)
 
             if (isHighlighted) {
                 this.allShownNotes.push({note, octave, row, col})
@@ -47,7 +50,8 @@ export default class Fretboard extends JDOMComponent {
                         isHighlighted,
                         isColored: this.isColored.value,
                         hide: col === 0 ? false : this.hideNotes.value,
-                        octave
+                        octave,
+                        onClick: this.onNoteClick
                     })}
                 </div>
             `

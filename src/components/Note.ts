@@ -4,7 +4,7 @@ import * as Tone from "tone";
 import {SampleLibrary} from "../Tonejs-Instruments.js";
 import {playNote} from "../notes/note-tone.js";
 
-export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic'} = {}) {
+export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic', onClick = ({note, octave}) => null} = {}) {
     const col = NOTE_COLORS[note]
     return html`
         <button 
@@ -17,7 +17,8 @@ export function Note(note: string, {isHighlighted = false, isColored = false, si
                 opacity: hide && !isHighlighted ? 0 : 1
             }}
             @click.cancel=${() => {
-                playNote(sound, note, octave)
+                onClick({note, octave})
+                playNote(sound, note, octave, 3)
             }}
             title=${`Note ${note}, Octave: ${octave}`}
         >
