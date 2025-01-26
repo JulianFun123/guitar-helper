@@ -2,6 +2,8 @@ import Router from "jdomjs/src/router/Router.js";
 import {computed, html, state, watch} from "jdomjs";
 import {Home} from "./views/Home.js";
 import {Tuner} from "./views/Tuner.js";
+import {CircleOfFifths} from "./views/CircleOfFifths.js";
+import Notation from "./components/Notation.js";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -43,6 +45,21 @@ export const router = new Router([
         path: '/tuner',
         name: 'tuner',
         view: () => Tuner()
+    },
+    {
+        path: '/circle-of-fifths',
+        name: 'circle-of-fifths',
+        view: () => CircleOfFifths()
+    },
+    {
+        path: '/notation',
+        name: 'notation',
+        view: () => html`
+            <div class="flex flex-col justify-center items-center w-full h-full">
+                <${Notation} />
+                <${Notation} clef="F" />
+            </div>
+        `
     }
 ])
 
@@ -55,11 +72,15 @@ const links = [
         label: 'Tuner',
         route: '/tuner'
     },
+    {
+        label: 'Circle of Fifths',
+        route: '/circle-of-fifths'
+    },
 ]
 console.log(router)
 html`
-    <div class="grid grid-cols-[280px_1fr] w-full h-full">
-        <div class="border-r border-neutral-300 bg-neutral-50 p-2 flex flex-col justify-between">
+    <div class="grid grid-cols-[280px_1fr] w-full h-full dark:text-white dark:bg-black">
+        <div class="border-r border-neutral-300 bg-neutral-50 dark:bg-black p-2 flex flex-col justify-between">
             <div>
                 <div class="mb-4 pt-2 px-3">
                     <span class="text-lg">Guitar Helper</span>
@@ -68,7 +89,11 @@ html`
                 <div>
                     ${computed(() =>links.map(l => html`
                         <a 
-                            class=${['p-2', 'px-3', 'block', 'rounded-md', 'transition-all', router.currentRoute.value?.path === l.route ? 'bg-neutral-200' : 'hover:bg-neutral-100']}
+                            class=${[
+                                'p-2', 'px-3', 'block', 'rounded-md', 
+                                'cursor-pointer', 'transition-all', 
+                                ...(router.currentRoute.value?.path === l.route ? ['bg-neutral-200', 'dark:bg-neutral-800'] : ['hover:bg-neutral-100', 'dark:hover:bg-neutral-900'])
+                            ]}
                            @click=${() => router.go(l.route)}
                         >
                             ${l.label}
@@ -98,3 +123,17 @@ html`
 `.appendTo(document.body)
 
 router.init()
+
+
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark')
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    if (event.matches) {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+});

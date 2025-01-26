@@ -12,3 +12,5 @@ body, html {
 :root {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

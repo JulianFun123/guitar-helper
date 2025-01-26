@@ -6,6 +6,7 @@ import {playNote} from "../notes/note-tone.js";
 import {getMajorChord, getMinorChord, parseChord, ParsedChord} from "../notes/chords.js";
 import Piano from "./Piano.js";
 import {getMajorScale, getMinorScale} from "../notes/scales.js";
+import Notation from "./Notation.js";
 
 
 @CustomElement('gh-chord')
@@ -14,7 +15,7 @@ export default class Chord extends Fretboard {
 
     selectedChord = 'G'
 
-    sound = state<'guitar-acoustic' | 'piano'>('guitar-acoustic')
+    sound = state<'guitar-acoustic' | 'piano' | 'notation'>('guitar-acoustic')
 
     chord = state<ParsedChord|null>(null)
 
@@ -51,21 +52,30 @@ export default class Chord extends Fretboard {
 
     render(): Node | JDOM | string | undefined {
         return html`
-            ${computed(() => this.sound.value === 'guitar-acoustic' ? html`
-                <div class="mb-2 pt-5 pr-[80px]">
-                    ${super.render()}
-                </div>
-            ` : computed(() => html`
-                <div class="mb-2 pt-5">
-                    <${Piano} length=${12} hideNotes=${this.hideNotes} allShownNotes=${this.allShownNotes} highlighted=${this.highlighted} />
-                </div>
-            `), [this.sound, this.chord])}
+            ${computed(() => this.sound.value === 'guitar-acoustic' ?
+                    html`
+                    <div class="mb-2 pt-5 pr-[80px]">
+                        ${super.render()}
+                    </div>
+                ` 
+                : this.sound.value === 'piano' ? computed(() => html`
+                    <div class="mb-2 pt-5">
+                        <${Piano} length=${12} hideNotes=${this.hideNotes} allShownNotes=${this.allShownNotes} highlighted=${this.highlighted} />
+                    </div>`) 
+                : html`
+                    <${Notation} width=${300} height=${230} notes=${[
+                        [   
+                            this.highlighted.value.map((n) => [n, 5, 1])
+                        ]
+                    ]} />
+                `, [this.sound, this.chord])}
             
             <div class="flex justify-center gap-2">
                 <div class="border rounded-md border-b-4 active:border-b-3 flex">
                     <select class="p-0.5 px-2 border-r" :bind=${this.sound}>
                         <option value="guitar-acoustic">Guitar</option>
                         <option value="piano">Piano</option>
+                        <option value="notation">Notation</option>
                     </select>
                     <button class="p-0.5 px-2" @click=${() => {
                         let t = 0;
@@ -74,7 +84,7 @@ export default class Chord extends Fretboard {
                             skip = !skip
                             if (skip) return;
                             setTimeout(() => {
-                                playNote(this.sound.value, note.note, note.octave, 1)
+                                playNote(this.sound.value === 'notation' ? 'piano' : this.sound.value, note.note, note.octave, 1)
                             }, t)
                             t += 10
                         })

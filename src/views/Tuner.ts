@@ -30,7 +30,7 @@ export function Tuner() {
     // false if note was ignored
     let isConfident = false;
 
-    let sensitivity = 0.015; // default is 0.02
+    let sensitivity = 0.02; // default is 0.02
 
     // length of an octave which has 12 notes
     // in Western musical scale
@@ -221,7 +221,8 @@ export function Tuner() {
 
 
             octave = note.value.octave;
-            deviation.value = centsOffFromPitch(pitch, selectedNote.value?.name ? Math.floor(noteStrings.indexOf(selectedNote.value?.name) * octaveLength) - 1 : noteIdx);
+
+            deviation.value = centsOffFromPitch(pitch, selectedNote.value?.name ? noteStrings.indexOf(selectedNote.value?.name) + 12 * (octave+1) : noteIdx);
 
             note.value = {
                 name: noteStrings[noteIdx % noteStrings.length],
@@ -230,7 +231,7 @@ export function Tuner() {
             };
 
 
-            if (note?.value.name !== noteHistory.value[noteHistory.value.length - 1]?.name) {
+            //if (note?.value.name !== noteHistory.value[noteHistory.value.length - 1]?.name) {
                 if (noteHistory.value.length === historyLength) {
                     noteHistory.value.shift();
                 }
@@ -239,7 +240,7 @@ export function Tuner() {
                     ...noteHistory.value,
                     { name: note.value?.name, octave: note.value.octave, deviation: deviation.value },
                 ];
-            }
+            //}
         }
         requestAnimationFrame(updatePitch);
     }
@@ -263,9 +264,9 @@ export function Tuner() {
 
         let lastPos = [100, 50]
         for (const note of [...noteHistory.value].reverse()) {
-            const pos = [100 - (100 / historyLength) * s++, 50 + (note.deviation / 3)]
+            const pos = [100 - (100 / historyLength) * s++, 50 - (note.deviation / 3)]
 
-            out.push(`<line x1="${pos[0]}%" y1="${pos[1]}%" x2="${lastPos[0]}%" y2="${lastPos[1]}%" stroke="black" />`)
+            out.push(`<line x1="${pos[0]}%" y1="${pos[1]}%" x2="${lastPos[0]}%" y2="${lastPos[1]}%" stroke="black"  class="dark:stroke-white" />`)
             lastPos = pos
         }
 
@@ -293,7 +294,7 @@ export function Tuner() {
                                     </defs>
                                     <rect x="0" y="0" width="100%" height="100%" fill="url(#redgr)" />
                                     
-                                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#555" />
+                                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#555" class="dark:stroke-neutral-300" />
                                     ${linePositions()}
                                 </svg>
                                 `
@@ -342,7 +343,7 @@ export function Tuner() {
         ` : html`
             <div class="flex flex-col justify-center items-center h-full w-full">
                 <button
-                        class="p-3 px-[6rem] text-lg border border-neutral-300 bg-neutral-100 rounded-xl"
+                        class="p-3 px-[6rem] text-lg border border-neutral-300 bg-neutral-100 rounded-xl dark:bg-neutral-800"
                         @click=${() => init()}
                 >
                     Start

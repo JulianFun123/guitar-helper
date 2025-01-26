@@ -6,6 +6,7 @@ const BASIC_MAJOR_SHAPES = {
     'C': [0, 1, 0, 2, 3, null],
     'D': [2, 3, 2, 0, null, null],
     'E': [0, 0, 1, 2, 2, 0],
+    'G': [3, 0, 0, 0, 2, 3],
 }
 const BASIC_MINOR_SHAPES = {
     'A': [0, 1, 2, 2, 0, null],

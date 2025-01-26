@@ -65,7 +65,7 @@ export default class Piano extends JDOMComponent {
             } else {
                 a.push(html`
                     <div 
-                        class="border h-[200px] w-[40px] flex items-end justify-center pb-1 border-b-3" 
+                        class="border dark:border-neutral-700 bg-white h-[200px] w-[40px] flex items-end justify-center pb-1 border-b-3" 
                         style=${{
                             borderRadius: i === 0 ? '10px 0px 0px 10px' : i === this.length-1 ? '0px 10px 10px 0px' : '',
                         }}

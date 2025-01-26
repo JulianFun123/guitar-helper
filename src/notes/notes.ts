@@ -55,6 +55,13 @@ export const getAfter = (key: string, addition: number) => {
 
     return NOTES[newInd]
 }
+export const getMDistance = (first: string, firstOctave: number, second: string, secondOctave: number) => {
+    const withoutSharps = NOTES.filter(n => n.length === 1)
+    const firstInd = withoutSharps.findIndex(k => k === first)
+    const secondInd = withoutSharps.findIndex(k => k === second)
+
+    return (firstInd + (firstOctave*withoutSharps.length)) - (secondInd + (secondOctave * withoutSharps.length))
+}
 export const getDistance = (first: string, second: string) => {
     const firstInd = NOTES.findIndex(k => k === first)
     const secondInd = NOTES.findIndex(k => k === second)

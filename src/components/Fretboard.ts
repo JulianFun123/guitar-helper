@@ -81,7 +81,7 @@ export default class Fretboard extends JDOMComponent {
             ([3, 5, 7, 9].includes(col) && row === middleLine) ||
             ([12].includes(col) && (row === middleLine-1 || row === middleLine+ 1 ))
         ) {
-            return html`<div class="w-[20px] h-[20px] bg-black rounded-full" />`
+            return html`<div class="w-[20px] h-[20px] bg-black dark:bg-neutral-300 rounded-full" />`
         }
 
         return null
@@ -103,7 +103,7 @@ export default class Fretboard extends JDOMComponent {
                                     } style="height: 34px; width: 80px">
                                         ${i ? this.spawnDot(rI, i) : null}
                                     </div>
-                                    ${i === 0 ? html`<div class="h-[34px] w-[6px] bg-black" />` : ''}
+                                    ${i === 0 ? html`<div class="h-[34px] w-[6px] bg-black dark:bg-white" />` : ''}
                                 `)}
                             </div>
                         `)}

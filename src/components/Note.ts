@@ -1,15 +1,16 @@
 import { html } from "jdomjs";
-import {NOTE_COLORS} from "../notes/notes.ts";
-import * as Tone from "tone";
-import {SampleLibrary} from "../Tonejs-Instruments.js";
+import {getAfter, NOTE_COLORS} from "../notes/notes.ts";
 import {playNote} from "../notes/note-tone.js";
 
 export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic', onClick = ({note, octave}) => null} = {}) {
     const col = NOTE_COLORS[note]
+
+    let noteText = note
+
     return html`
         <button 
-            class=${`absolute z-10 border flex items-center justify-center border-black rounded-full ${
-                isHighlighted ? isColored ? `${col[0]} ${col[1]}` : 'bg-gray-600 text-white' : 'bg-white'
+            class=${`absolute z-10 border flex items-center justify-center border-black rounded-full dark:bg-neutral-800 text-black ${
+                isHighlighted ? isColored ? `${col[0]} ${col[1]}` : 'bg-gray-600 dark:bg-white dark:text-black text-white' : 'dark:text-white bg-white'
             }`} 
             style=${{
                 width: `${size}px`,
@@ -23,7 +24,7 @@ export function Note(note: string, {isHighlighted = false, isColored = false, si
             title=${`Note ${note}, Octave: ${octave}`}
         >
             <span class="font-600 block" style=${{fontSize: `${size / 1.8}px`}}>
-                ${note}
+                ${noteText}
             </span>
         </button>
     
