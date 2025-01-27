@@ -17,7 +17,7 @@ export const getMinorChord = (key: string) => {
 }
 
 export const getMajorScaleChords = (key: string) => {
-    const scaleNotes = getMajorScale(key)
+    const scaleNotes = getMajorScale(key).map(k => k[0])
     return [
         `${scaleNotes[0]}`,
         `${scaleNotes[1]}m`,
@@ -29,7 +29,7 @@ export const getMajorScaleChords = (key: string) => {
     ]
 }
 export const getMinorScaleChords = (key: string) => {
-    const scaleNotes = getMinorScale(key)
+    const scaleNotes = getMinorScale(key).map(k => k[0])
     return [
         `${scaleNotes[0]}m`,
         `${scaleNotes[1]}dim`,

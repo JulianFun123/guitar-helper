@@ -1,3 +1,5 @@
+import {Note} from "tone/build/esm/core/type/NoteUnits.js";
+
 export const NOTES = [
     'A', 'A#',
     'B',
@@ -20,7 +22,7 @@ export const NOTE_NAMES = {
     'F': 'F',
     'F#': 'F# / Gb',
     'G': 'G',
-    'G#': 'G / Ab',
+    'G#': 'G# / Ab',
 }
 
 export const NOTE_COLORS = {
@@ -40,25 +42,29 @@ export const NOTE_COLORS = {
 
 export type NotesType = typeof NOTES[number];
 
-export const getAfter = (key: string, addition: number) => {
+export const getAfterWithOctave = (key: string, addition: number, startingOctave = 2): [NotesType, number] => {
     const ind = NOTES.findIndex(k => k === key)
 
     let newInd = ind + addition
 
     while (newInd < 0) {
         newInd += 12
+        if (startingOctave) startingOctave--
     }
 
     while (newInd > NOTES.length - 1) {
         newInd -= NOTES.length
+        if (startingOctave) startingOctave++
     }
 
-    if (NOTES[newInd] === undefined) {
-        console.log(newInd)
-    }
-
-    return NOTES[newInd]
+    return [NOTES[newInd], startingOctave] as [NotesType, number]
 }
+
+export const getAfter = (key: string, addition: number): NotesType => {
+    return getAfterWithOctave(key, addition)[0]
+}
+
+
 export const getMDistance = (first: string, firstOctave: number, second: string, secondOctave: number) => {
     const withoutSharps = NOTES.filter(n => n.length === 1)
     const firstInd = withoutSharps.findIndex(k => k === first)

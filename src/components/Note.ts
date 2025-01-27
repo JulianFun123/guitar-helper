@@ -23,7 +23,7 @@ export function Note(note: string, {isHighlighted = false, isColored = false, si
             }}
             title=${`Note ${note}, Octave: ${octave}`}
         >
-            <span class="font-600 block" style=${{fontSize: `${size / 1.8}px`}}>
+            <span class="font-600 block select-none" style=${{fontSize: `${size / 1.8}px`}}>
                 ${noteText}
             </span>
         </button>

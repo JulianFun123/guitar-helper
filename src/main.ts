@@ -58,6 +58,7 @@ export const router = new Router([
             const a = state(null)
             return html`
             <div class="flex flex-col justify-center items-center w-full h-full">
+                <div class="max-w-full">
                 <${Notation} :ref=${a} clef="G" notes=${[
                     {
                         scale: 'B',
@@ -181,6 +182,7 @@ export const router = new Router([
                         }]
                     }
                 ]} />
+                </div>
                 
                 <button @click=${() => a.value.play()}>play</button>
             </div>
@@ -242,7 +244,7 @@ html`
                 </div>
             </div>
         </div>
-        <div>
+        <div class="overflow-auto">
             ${ router.view }
         </div>
     </div>

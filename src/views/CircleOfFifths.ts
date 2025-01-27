@@ -2,7 +2,6 @@ import {html} from "jdomjs";
 import {Note} from "../components/Note.js";
 import Chord from "../components/Chord.js";
 import Notation from "../components/Notation.js";
-import {getMajorScale, getMinorScale} from "../notes/scales.js";
 
 export function CircleOfFifths() {
     const notes = [

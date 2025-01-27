@@ -240,7 +240,7 @@ export default class Notation extends JDOMComponent {
             const rx = Math.max(this.tactWidth*0.025, 7)
 
             svg += `
-                <ellipse cx=${nx} cy=${ny} rx=${rx} ry=${ry} transform="${`rotate(-30)`}" transform-origin="${nx} ${ny}" class="dark:fill-white" />
+                <ellipse debug="${note} ${annotation}" cx=${nx} cy=${ny} rx=${rx} ry=${ry} transform="${`rotate(-30)`}" transform-origin="${nx} ${ny}" class="dark:fill-white" />
             `
 
             flagBottom = flagBottom === null ? ny > center : flagBottom
@@ -259,7 +259,7 @@ export default class Notation extends JDOMComponent {
 
             if (noteL <= 2){
                 svg += `
-                    <ellipse cx=${nx} cy=${ny} rx=${Math.max(this.tactWidth * 0.015, 4)} ry=${Math.max(this.tactWidth * 0.0125, 3)} transform="${`rotate(30)`}" fill="white" class="dark:fill-white" transform-origin="${nx} ${ny}" />
+                    <ellipse cx=${nx} cy=${ny} rx=${Math.max(this.tactWidth * 0.015, 4)} ry=${Math.max(this.tactWidth * 0.0125, 3)} transform="${`rotate(30)`}" fill="white" class="dark:fill-black" transform-origin="${nx} ${ny}" />
                 `
             }
 
@@ -308,12 +308,12 @@ export default class Notation extends JDOMComponent {
                 parsedScaleChord = parseChord(tact.scale)
 
 
-                scale = getScale(parsedScaleChord).sort(parsedScaleChord.cameFromb ?
-                    (a, b) =>  (a.includes('#') ? getAfter(a, 1) + 'b' : a) > (b.includes('#') ? getAfter(b, 1) + 'b' : b) ? 1 : -1
-                    : undefined)
+                scale = getScale(parsedScaleChord, this.clef === 'G' ? 5 : 3).sort(parsedScaleChord.cameFromb ?
+                    ([a], [b]) =>  (a.includes('#') ? getAfter(a, 1) + 'b' : a) > (b.includes('#') ? getAfter(b, 1) + 'b' : b) ? 1 : -1
+                    : (a, b) =>  a[0] > b[0] ? 1 : -1)
 
                 let shift = false
-                scale.forEach((n) => {
+                scale.forEach(([n, oct]) => {
                     if (spawnNote(n, this.clef === 'G' ? 5 : 3, 1, innerX + (shift ? 20 : 0), false, null, false, null, parsedScaleChord.cameFromb).annotation)
                         shift = !shift
                 })
@@ -361,7 +361,7 @@ export default class Notation extends JDOMComponent {
                                             ? this.tactWidth * entry.length : false,
                                     lastFlagBottom,
                                     true,
-                                    scale || null,
+                                    scale?.map(k => k[0]) || null,
                                     parsedScaleChord?.cameFromb || false
                                 )
                                 lastFlagBottom = flagBottom
@@ -417,6 +417,9 @@ export default class Notation extends JDOMComponent {
         const svgEl = document.createElement('div')
 
         svgEl.style.width = 'fit-content'
+        svgEl.style.maxWidth = '100%'
+        svgEl.style.overflow = 'auto'
+        svgEl.style.userSelect = 'none'
 
         createVerticalLine((this.width || x)-1)
 
