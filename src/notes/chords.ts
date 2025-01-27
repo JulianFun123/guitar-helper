@@ -44,12 +44,15 @@ export const getMinorScaleChords = (key: string) => {
 type ChordType = 'MAJOR' | 'MINOR' | 'DIMINISHED'
 export type ParsedChord = {
     baseNote: string;
-    type: ChordType
+    type: ChordType,
+    cameFromb: boolean
 }
 
 export function parseChord(chord: string): ParsedChord {
     const noteParts = chord.split('')
     let type: ChordType = 'MAJOR'
+
+    let cameFromb = false
 
     function nextIs(string, startInd = 0) {
         const split = string.split('')
@@ -72,7 +75,7 @@ export function parseChord(chord: string): ParsedChord {
         return false
     }
 
-    const baseNote = [...NOTES].reverse().find(n => nextIsAndCall(n))
+    let baseNote = [...NOTES].reverse().find(n => nextIsAndCall(n))
 
     let i = 0
     while (noteParts.length > 0) {
@@ -84,6 +87,9 @@ export function parseChord(chord: string): ParsedChord {
             type = 'MINOR'
         } else if (nextIsAndCall('dim') || nextIsAndCall('Dim')) {
             type = 'DIMINISHED'
+        } else if (nextIsAndCall('b')) {
+            baseNote = getAfter(baseNote, -1)
+            cameFromb = true
         } else {
             break;
         }
@@ -91,6 +97,7 @@ export function parseChord(chord: string): ParsedChord {
 
     return {
         baseNote,
-        type
+        type,
+        cameFromb
     }
 }

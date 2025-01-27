@@ -45,6 +45,10 @@ export const getAfter = (key: string, addition: number) => {
 
     let newInd = ind + addition
 
+    while (newInd < 0) {
+        newInd += 12
+    }
+
     while (newInd > NOTES.length - 1) {
         newInd -= NOTES.length
     }

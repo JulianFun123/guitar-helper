@@ -54,12 +54,138 @@ export const router = new Router([
     {
         path: '/notation',
         name: 'notation',
-        view: () => html`
+        view: () => {
+            const a = state(null)
+            return html`
             <div class="flex flex-col justify-center items-center w-full h-full">
-                <${Notation} />
-                <${Notation} clef="F" />
+                <${Notation} :ref=${a} clef="G" notes=${[
+                    {
+                        scale: 'B',
+                        speed: [4, 4],
+                        bpm: 80,
+                        notes: [{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'Ab',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 4
+                        },{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'A',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'C',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 4
+                        },{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'A',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'C',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 4
+                        },{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'A',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'C',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 4
+                        },{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'A',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'C',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 2
+                        },{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'A',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'C',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 4
+                        },{
+                            type: 'note',
+                            notes: [
+                                {
+                                    note: 'A',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'C',
+                                    octave: 5,
+                                },
+                                {
+                                    note: 'D',
+                                    octave: 5,
+                                }
+                            ],
+                            length: 1 / 4
+                        }]
+                    }
+                ]} />
+                
+                <button @click=${() => a.value.play()}>play</button>
             </div>
         `
+        }
     }
 ])
 

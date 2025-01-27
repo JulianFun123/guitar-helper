@@ -1,4 +1,5 @@
 import {getAfter} from "./notes.ts";
+import {parseChord, ParsedChord} from "./chords.js";
 
 export const getMajorScale = (key: string) => {
     return [
@@ -22,4 +23,10 @@ export const getMinorScale = (key: string) => {
         getAfter(key, 8),
         getAfter(key, 10),
     ]
+}
+
+export const getScale = (chord: string|ParsedChord) => {
+    const parsed = typeof chord === 'string' ? parseChord(chord) : chord
+    if (parsed.type === 'MAJOR') return getMajorScale(parsed.baseNote)
+    if (parsed.type === 'MINOR') return getMinorScale(parsed.baseNote)
 }

@@ -1,6 +1,8 @@
 import {html} from "jdomjs";
 import {Note} from "../components/Note.js";
 import Chord from "../components/Chord.js";
+import Notation from "../components/Notation.js";
+import {getMajorScale, getMinorScale} from "../notes/scales.js";
 
 export function CircleOfFifths() {
     const notes = [
@@ -30,7 +32,7 @@ export function CircleOfFifths() {
                     <div 
                     class="absolute z-0 left-[50%] top-[50%] h-[4rem] gap-2 flex items-center justify-end" 
                     style=${{
-                    width: 'calc(50% + 4.5rem)',
+                    width: 'calc(50% + 10.5rem)',
                     transformOrigin: 'left',
                     transform: `translateY(-50%) rotate(${calcRotation(i)}deg)`,
                         zIndex: 1
@@ -39,12 +41,6 @@ export function CircleOfFifths() {
                     <div class="w-[2rem]">
                         <div class="group relative z-1 w-[30px] h-[30px]" style=${{rotate: `${0-calcRotation(i)}deg`}}>
                             <${Note(note[2])} />
-                            
-                            <div class="hidden z-[1000] group-hover:block absolute left-0 top-0 p-4 pt-8" style="transform: translateX(-50%)">
-                                <div class="bg-white dark:border-neutral-800 border rounded-xl p-3">
-                                    <${Chord} selectedChord=${`${note[2]}m`} />
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="w-[2rem]">
@@ -55,14 +51,20 @@ export function CircleOfFifths() {
                     <div class="w-[2rem]">
                         <div class="group relative z-1 w-[30px] h-[30px]" style=${{rotate: `${0-calcRotation(i)}deg`}}>
                             <${Note(note[0])} />
-
-                            <div class="hidden z-[1000] dark:border-neutral-800 group-hover:block absolute left-0 top-0 p-4 pt-8" style="transform: translateX(-50%)">
-                                <div class="bg-white border rounded-xl p-3">
-                                    <${Chord} selectedChord=${note[0]} />
-                                </div>
-                            </div>
                         </div>
                     </div>
+                        <div class="w-[5.5rem]">
+                            <div :if=${note[0] !== 'C'} class="flex items-center justify-center" style=${{rotate: `${0-calcRotation(i)}deg`}}>
+                                <${Notation} width=${80} hideBpm hideSpeed notes=${[
+                                    {
+                                        scale: note[0],
+                                        speed: [4, 4],
+                                        bpm: 80,
+                                        notes: []
+                                    }
+                                ]} tactWidth=30 lineHeight=${10} />
+                            </div>
+                        </div>
                 </div>
                 `)}
             </div>

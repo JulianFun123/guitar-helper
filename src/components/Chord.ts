@@ -6,7 +6,7 @@ import {playNote} from "../notes/note-tone.js";
 import {getMajorChord, getMinorChord, parseChord, ParsedChord} from "../notes/chords.js";
 import Piano from "./Piano.js";
 import {getMajorScale, getMinorScale} from "../notes/scales.js";
-import Notation from "./Notation.js";
+import Notation, {NotationNote} from "./Notation.js";
 
 
 @CustomElement('gh-chord')
@@ -64,10 +64,19 @@ export default class Chord extends Fretboard {
                     </div>`) 
                 : html`
                     <${Notation} width=${300} height=${230} notes=${[
-                        [   
-                            this.highlighted.value.map((n) => [n, 5, 1])
-                        ]
-                    ]} />
+                            {
+                                speed: [4, 4],
+                                bpm: 80,
+                                notes: [{
+                                    type: 'note',
+                                    notes: [...this.highlighted.value].sort((a, b) => a > b ? 1 :-1).map((n) => ({
+                                        note: n,
+                                        octave: 4
+                                    } as NotationNote)),
+                                    length: 1 / 2
+                                }]
+                            }
+                        ]} />
                 `, [this.sound, this.chord])}
             
             <div class="flex justify-center gap-2">

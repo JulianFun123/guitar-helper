@@ -276,9 +276,9 @@ export function Tuner() {
     return html`
         ${computed(() => isStarted.value ? html`
             <div class="relative overflow-hidden h-full w-full">
-                <div class="grid grid-cols-[1fr_200px_1fr] gap-[10rem] items-center h-full w-full absolute left-[50%] top-[50%]" style="transform: translate(-50%, -50%)">
-                    <div class="w-full flex justify-end items-end">
-                        <div class="h-[200px] border border-l-0 w-full rounded-r">
+                <div class="grid grid-cols-[1fr_200px_1fr] gap-[10rem] items-center h-full absolute left-[50%] top-[50%]" style="transform: translate(-50%, -50%)">
+                    <div class="flex justify-end items-end w-[600px] pr-[50px]">
+                        <div class="h-[200px] border w-full rounded">
                             ${computed(() => {
                                 const svg = document.createElement("div");
                                 svg.style.width = "100%";

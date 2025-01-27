@@ -6,6 +6,7 @@ import Fretboard from "../components/Fretboard.js";
 import {NOTE_NAMES, NOTES} from "../notes/notes.js";
 import Chord from "../components/Chord.js";
 import {INSTRUMENTS, savedParams, saveParams, tuning} from "../main.js";
+import Notation from "../components/Notation.js";
 
 export function Home() {
     const TYPES = ['MAJOR_SCALE', 'MINOR_SCALE', 'MAJOR_CHORD', 'MINOR_CHORD'] as const;
@@ -52,6 +53,8 @@ export function Home() {
     })
 
     setHighlights()
+
+    const notationRef = state(null)
 
     return html`
     <div class="flex flex-col items-center gap-5 mb-5">
@@ -130,13 +133,13 @@ export function Home() {
     ${computed(() => selectedType.value.includes('SCALE') ? html`
         <div class="flex flex-col justify-center gap-2">
             <span class="text-center opacity-60">Compatible Chords:</span>
-            <div class="flex gap-3 justify-center">
+            <div class="flex gap-2 justify-center">
                 ${(selectedType.value === 'MAJOR_SCALE' ? getMajorScaleChords : getMinorScaleChords)(selectedNote.value).map(c => html`
-                    <div class="bg-neutral-100 px-1 rounded-md group relative">
+                    <div class="bg-neutral-100 dark:bg-neutral-800 px-1.5 rounded-md group relative">
                         <span class="relative  z-100">${c}</span>
                         
                         <div class="hidden z-10 group-hover:block absolute left-0 top-0 p-4 pt-8" style="transform: translateX(-50%)">
-                            <div class="bg-white border rounded-xl p-3">
+                            <div class="bg-white dark:bg-black border rounded-xl p-3">
                                 <${Chord} selectedChord=${c} hideNotes=${hideNotes} isColored=${isColored} />
                             </div>
                         </div>    
@@ -144,7 +147,33 @@ export function Home() {
                 `)}
             </div>
         </div>
-    ` : null)}
+        
+        <div class="flex flex-col justify-center gap-2 items-center mt-5">
+            <${Notation} height="200" 
+                 lineHeight=${15} 
+                 tactWidth=${100}
+                 :ref=${notationRef}
+                 notes=${[
+                    {
+                        scale: `${selectedNote.value}${selectedType.value === 'MAJOR_SCALE' ? '' : 'm'}`,
+                        speed: [4, 4],
+                        bpm: 80,
+                        notes: (selectedType.value === 'MAJOR_SCALE' ? getMajorScale : getMinorScale)(selectedNote.value)?.sort?.((a,b) => a>b ? 1 : -1).map(n => ({
+    
+                            type: 'note',
+                            notes: [{
+                                note: n,
+                                octave: 5,
+                            }],
+                            length: 1 / 2
+                        }))
+                    }
+            ]} />
+            <button class="px-3 rounded-md border" @click=${() => {
+                notationRef.value.play()
+            }}>Play</button>
+        </div>
+    ` : null, [selectedType, selectedNote])}
 
     `
 }
