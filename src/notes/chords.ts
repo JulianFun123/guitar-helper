@@ -1,4 +1,4 @@
-import {getAfter, NOTES} from "./notes.ts";
+import {getAfter, NOTES, NotesType} from "./notes.ts";
 import {getMajorScale, getMinorScale} from "./scales.js";
 
 export const getMajorChord = (key: string) => {
@@ -16,7 +16,7 @@ export const getMinorChord = (key: string) => {
     ]
 }
 
-export const getMajorScaleChords = (key: string) => {
+export const getMajorScaleChords = (key: NotesType) => {
     const scaleNotes = getMajorScale(key).map(k => k[0])
     return [
         `${scaleNotes[0]}`,
@@ -28,7 +28,7 @@ export const getMajorScaleChords = (key: string) => {
         `${scaleNotes[6]}dim`,
     ]
 }
-export const getMinorScaleChords = (key: string) => {
+export const getMinorScaleChords = (key: NotesType) => {
     const scaleNotes = getMinorScale(key).map(k => k[0])
     return [
         `${scaleNotes[0]}m`,

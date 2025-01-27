@@ -3,7 +3,7 @@ import {getMajorScale, getMinorScale} from "../notes/scales.js";
 import {getMajorChord, getMajorScaleChords, getMinorChord, getMinorScaleChords} from "../notes/chords.js";
 import Piano from "../components/Piano.js";
 import Fretboard from "../components/Fretboard.js";
-import {NOTE_NAMES, NOTES} from "../notes/notes.js";
+import {NOTE_NAMES, NOTES, NotesType} from "../notes/notes.js";
 import Chord from "../components/Chord.js";
 import {INSTRUMENTS, savedParams, saveParams, tuning} from "../main.js";
 import Notation from "../components/Notation.js";
@@ -26,10 +26,10 @@ export function Home() {
     const setHighlights = () => {
         switch (selectedType.value) {
             case 'MAJOR_SCALE':
-                highlightedNotes.value = getMajorScale(selectedNote.value).map(k => k[0])
+                highlightedNotes.value = getMajorScale(selectedNote.value as NotesType).map(k => k[0])
                 break
             case 'MINOR_SCALE':
-                highlightedNotes.value = getMinorScale(selectedNote.value).map(k => k[0])
+                highlightedNotes.value = getMinorScale(selectedNote.value as NotesType).map(k => k[0])
                 break
             case 'MAJOR_CHORD':
                 highlightedNotes.value = getMajorChord(selectedNote.value)
@@ -138,7 +138,7 @@ export function Home() {
         <div class="flex flex-col justify-center gap-2">
             <span class="text-center opacity-60">Compatible Chords:</span>
             <div class="flex gap-2 justify-center">
-                ${(selectedType.value === 'MAJOR_SCALE' ? getMajorScaleChords : getMinorScaleChords)(selectedNote.value).map(([c]) => html`
+                ${(selectedType.value === 'MAJOR_SCALE' ? getMajorScaleChords : getMinorScaleChords)(selectedNote.value as NotesType).map(([c]) => html`
                     <div class="bg-neutral-100 dark:bg-neutral-800 px-1.5 rounded-md group relative">
                         <span class="relative  z-100">${c}</span>
                         
@@ -162,7 +162,7 @@ export function Home() {
                         scale: `${selectedNote.value}${selectedType.value === 'MAJOR_SCALE' ? '' : 'm'}`,
                         speed: [4, 4],
                         bpm: 80,
-                        notes: (selectedType.value === 'MAJOR_SCALE' ? getMajorScale : getMinorScale)(selectedNote.value, selectedNote.value> 'B' ? 4 : 5)?.map(([n, oct]) => ({
+                        notes: (selectedType.value === 'MAJOR_SCALE' ? getMajorScale : getMinorScale)(selectedNote.value as NotesType, selectedNote.value> 'B' ? 4 : 5)?.map(([n, oct]) => ({
     
                             type: 'note',
                             notes: [{
