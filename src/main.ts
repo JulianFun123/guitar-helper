@@ -4,6 +4,7 @@ import {Home} from "./views/Home.js";
 import {Tuner} from "./views/Tuner.js";
 import {CircleOfFifths} from "./views/CircleOfFifths.js";
 import Notation from "./components/Notation.js";
+import ChordFinder from "./views/ChordFinder.js";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -50,6 +51,11 @@ export const router = new Router([
         path: '/circle-of-fifths',
         name: 'circle-of-fifths',
         view: () => CircleOfFifths()
+    },
+    {
+        path: '/chord-finder',
+        name: 'chord-finder',
+        view: () => ChordFinder()
     },
     {
         path: '/notation',
@@ -204,8 +210,12 @@ const links = [
         label: 'Circle of Fifths',
         route: '/circle-of-fifths'
     },
+    {
+        label: 'Chord Finder',
+        route: '/chord-finder'
+    },
 ]
-console.log(router)
+
 html`
     <div class="grid grid-cols-[280px_1fr] w-full h-full dark:text-white dark:bg-black">
         <div class="border-r border-neutral-300 bg-neutral-50 dark:bg-black p-2 flex flex-col justify-between">

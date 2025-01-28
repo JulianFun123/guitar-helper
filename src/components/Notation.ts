@@ -181,7 +181,7 @@ export default class Notation extends JDOMComponent {
             }
 
             let ny = center + getMDistance(this.clef === 'G' ? 'B' : 'D',
-                this.clef === 'G' ? 5 : 3
+                this.clef === 'G' ? 4 : 2
                 , note[0], octave)*(this.lineHeight/2)
 
 

@@ -1,6 +1,7 @@
 import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
 import {getAfter, getAfterOctave, NotesType} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
+import {getFretboard} from "../notes/fretboardHelper.js";
 
 
 @CustomElement('gh-fretboard')
@@ -9,7 +10,7 @@ export default class Fretboard extends JDOMComponent {
     rows = 16
     baseNotes = ['E', 'A', 'D', 'G', 'B', 'E']
 
-    highlighted = state<string[]>([])
+    highlighted = state<string[]|any[][]>([])
     hideNotes = state<boolean>(false)
     isColored = state<boolean>(false)
 
@@ -34,7 +35,9 @@ export default class Fretboard extends JDOMComponent {
 
     fretboardNote(note: NotesType, octave = 2, row: number, col: number) {
         return computed(() => {
-            const isHighlighted = this.isHighlightedHandler ? this.isHighlightedHandler(row, col, note, octave) : this.highlighted.value.includes(note)
+            const isHighlighted = this.isHighlightedHandler
+                ? this.isHighlightedHandler(row, col, note, octave)
+                : (!!this.highlighted.value.filter(n => typeof n === 'string' ? n ===  note : n[0] === note && n[1] === octave).length)
 
             if (isHighlighted) {
                 this.allShownNotes.push({note, octave, row, col})
@@ -58,16 +61,16 @@ export default class Fretboard extends JDOMComponent {
         })
     }
 
-    fretboardRow(note: string, row: number) {
+    fretboardRow(notes: string[], row: number) {
         return html`
-        <div class="flex">
-            ${[...new Array(this.rows)].map((_, i) => {
-                if (i !== 0)
-                    i += this.shift.value ? this.shift.value - 1 : 0
-                return this.fretboardNote(getAfter(note, i), getAfterOctave(note, i, [2, 2, 3, 3, 3, 4][row]), row, i)
-            })}
-        </div>
-    `
+            <div class="flex">
+                ${notes.map(([note, oct], i) => {
+                    if (i !== 0)
+                        i += this.shift.value ? this.shift.value - 1 : 0
+                    return this.fretboardNote(note as NotesType, Number(oct), row, i)
+                })}
+            </div>
+        `
     }
 
     spawnDot(row: number, col: number) {
@@ -91,7 +94,7 @@ export default class Fretboard extends JDOMComponent {
         this.allShownNotes = []
         return html`
             <div class="relative w-fit">
-                ${[...this.baseNotes].reverse().map((k, i) => this.fretboardRow(k, 5-i))}
+                ${getFretboard(this.baseNotes, this.rows).reverse().map((k, i) => this.fretboardRow(k, 5-i))}
                 
                 <div class="absolute left-[-2px] top-0 w-full h-full flex items-center justify-center">
                     <div>

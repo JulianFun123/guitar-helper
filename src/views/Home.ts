@@ -1,6 +1,13 @@
 import {computed, html, state, watch} from "jdomjs";
-import {getMajorScale, getMinorScale} from "../notes/scales.js";
-import {getMajorChord, getMajorScaleChords, getMinorChord, getMinorScaleChords} from "../notes/chords.js";
+import {getMajorScale, getMinorScale, getScale} from "../notes/scales.js";
+import {
+    buildChord,
+    ChordType, getChord,
+    getMajorChord,
+    getMajorScaleChords,
+    getMinorChord,
+    getMinorScaleChords
+} from "../notes/chords.js";
 import Piano from "../components/Piano.js";
 import Fretboard from "../components/Fretboard.js";
 import {NOTE_NAMES, NOTES, NotesType} from "../notes/notes.js";
@@ -13,8 +20,10 @@ export function Home() {
 
     type TypeType = typeof TYPES[number];
 
-    const selectedNote = state(savedParams.get('note') || 'A')
-    const selectedType = state<TypeType>(savedParams.get('type') as TypeType || 'MAJOR_SCALE');
+    const selectedNote = state(savedParams.get('note') || 'C')
+    const selectedType = state<ChordType>(savedParams.get('type') as ChordType || 'MAJOR')
+    const selectedOutput = state(savedParams.get('output') || 'SCALE')
+
     const hideNotes = state<boolean>(savedParams.has('hide-notes') ? savedParams.get('hide-notes') === 'true' : true);
     const isColored = state<boolean>(savedParams.has('colored') ? savedParams.get('colored') === 'true' : false);
 
@@ -24,23 +33,23 @@ export function Home() {
 
 
     const setHighlights = () => {
-        switch (selectedType.value) {
-            case 'MAJOR_SCALE':
-                highlightedNotes.value = getMajorScale(selectedNote.value as NotesType).map(k => k[0])
-                break
-            case 'MINOR_SCALE':
-                highlightedNotes.value = getMinorScale(selectedNote.value as NotesType).map(k => k[0])
-                break
-            case 'MAJOR_CHORD':
-                highlightedNotes.value = getMajorChord(selectedNote.value)
-                break
-            case 'MINOR_CHORD':
-                highlightedNotes.value = getMinorChord(selectedNote.value)
-                break
+        const chord = buildChord({
+            baseNote: selectedNote.value,
+            type: selectedType.value,
+        })
+
+        console.log(chord)
+        switch (selectedOutput.value) {
+            case 'SCALE':
+                highlightedNotes.value = getScale(chord).map(n => n[0])
+                break;
+            case 'CHORD':
+                highlightedNotes.value = getChord(chord).map(n => n[0])
+                break;
         }
     }
 
-    watch([selectedType, selectedNote, hideNotes], () => {
+    watch([selectedType, selectedNote, hideNotes, selectedOutput], () => {
         savedParams.set('note', selectedNote.value);
         savedParams.set('type', selectedType.value);
         saveParams();
@@ -74,20 +83,23 @@ export function Home() {
     <div class="flex flex-col gap-3 justify-center mb-8">
         <div class="flex gap-5 justify-center">
             <div class="flex gap-2 items-center">
-                <label for="note">Note:</label>
+
                 <select id="note" class="border rounded-md p-1" :bind=${selectedNote}>
                     ${NOTES.map(n => html`<option value=${n}>${NOTE_NAMES[n]}</option>`)}
                 </select>
-            </div>
-            <div class="flex gap-2 items-center">
-                <label for="type">Type:</label>
+                
                 <select id="type" id="type-select" class="border rounded-md p-1" :bind=${selectedType}>
                     ${[
-        ['MAJOR_SCALE', 'Major Scale'],
-        ['MINOR_SCALE', 'Minor Scale'],
-        ['MAJOR_CHORD', 'Major Chord'],
-        ['MINOR_CHORD', 'Minor Chord'],
-    ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
+                        ['MAJOR', 'Major'],
+                        ['MINOR', 'Minor'],
+                        ['DIMINISHED', 'Diminished'],
+                    ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
+                </select>
+                <select id="type" id="type-select" class="border rounded-md p-1" :bind=${selectedOutput}>
+                    ${[
+                        ['SCALE', 'Scale'],
+                        ['CHORD', 'Chord'],
+                    ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
                 </select>
             </div>
         </div>
@@ -128,17 +140,17 @@ export function Home() {
 
 
 
-    ${computed(() => selectedType.value.includes('CHORD') ? html`
+    ${computed(() => selectedOutput.value === 'CHORD' ? html`
         <div class="flex gap-5 justify-center mb-3">
-            <${Chord} selectedChord=${`${selectedNote.value}${selectedType.value === 'MINOR_CHORD' ? 'm' : ''}`} hideNotes=${hideNotes} isColored=${isColored} />
+            <${Chord} selectedChord=${`${selectedNote.value}${selectedType.value === 'MINOR' ? 'm' : ''}`} hideNotes=${hideNotes} isColored=${isColored} />
         </div>
     ` : null, [selectedNote, selectedType])}
     
-    ${computed(() => selectedType.value.includes('SCALE') ? html`
+    ${computed(() => selectedOutput.value === 'SCALE' ? html`
         <div class="flex flex-col justify-center gap-2">
             <span class="text-center opacity-60">Compatible Chords:</span>
             <div class="flex gap-2 justify-center">
-                ${(selectedType.value === 'MAJOR_SCALE' ? getMajorScaleChords : getMinorScaleChords)(selectedNote.value as NotesType).map(([c]) => html`
+                ${(selectedType.value === 'MINOR' ? getMajorScaleChords : getMinorScaleChords)(selectedNote.value as NotesType).map(([c]) => html`
                     <div class="bg-neutral-100 dark:bg-neutral-800 px-1.5 rounded-md group relative">
                         <span class="relative  z-100">${c}</span>
                         
@@ -159,11 +171,10 @@ export function Home() {
                  :ref=${notationRef}
                  notes=${[
                     {
-                        scale: `${selectedNote.value}${selectedType.value === 'MAJOR_SCALE' ? '' : 'm'}`,
+                        scale: `${selectedNote.value}${selectedType.value}`,
                         speed: [4, 4],
-                        bpm: 80,
-                        notes: (selectedType.value === 'MAJOR_SCALE' ? getMajorScale : getMinorScale)(selectedNote.value as NotesType, selectedNote.value> 'B' ? 4 : 5)?.map(([n, oct]) => ({
-    
+                        bpm: 60,
+                        notes: getScale(selectedNote.value as NotesType, 4)?.map(([n, oct]) => ({
                             type: 'note',
                             notes: [{
                                 note: n,
@@ -177,7 +188,7 @@ export function Home() {
                 notationRef.value.play()
             }}>Play</button>
         </div>
-    ` : null, [selectedType, selectedNote])}
+    ` : null, [selectedType, selectedNote, selectedOutput])}
 
     `
 }

@@ -1,5 +1,6 @@
 import {getDistance, NOTES, NotesType} from "./notes.js";
-import {ParsedChord} from "./chords.js";
+import {getChord, ParsedChord} from "./chords.js";
+import {getFretboard} from "./fretboardHelper.js";
 
 const BASIC_MAJOR_SHAPES = {
     'A': [0, 2, 2, 2, 0, null],
@@ -24,6 +25,32 @@ export const GUITAR_CHORD_SHAPES = {
     DIMINISHED: BASIC_DIMINISHED_SHAPES,
 }
 
+export function generateChordShape(chord: string) {
+    const fretboard = getFretboard(['E ', 'A', 'D', 'G', 'B', 'E'], 4);
+    const chordSymboles = fretboard.map(() => null)
+
+    for (const rowI in fretboard) {
+        const row = fretboard[rowI];
+
+        for (const colI in row) {
+            const col = row[colI];
+
+            if (getChord(chord, 2).map(n => n[0]).includes(col[0])) {
+                chordSymboles[rowI] = {
+                    note: col[0],
+                    row: Number(rowI),
+                    col: Number(colI)
+                }
+                break;
+            }
+        }
+    }
+
+    return (col: number, row: number) => {
+        return chordSymboles.filter(s => s ? s.col === row && s.row === col : false).length > 0
+    }
+}
+
 export function guitarChordHighlightedHandler(chord: ParsedChord, { shift = 0, shape = 'default' } = {}) {
     let chordShape = GUITAR_CHORD_SHAPES[chord.type]?.[chord.baseNote]
 
@@ -41,7 +68,7 @@ export function guitarChordHighlightedHandler(chord: ParsedChord, { shift = 0, s
         if (shape === 'default') {
         } else {
             if (chord.type === 'DIMINISHED') {
-                console.log('YO')
+
                 switch (shape) {
                     case 'A#':
                         shift = shift - 2 > 0 ? shift - 1 : shift + 11;

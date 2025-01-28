@@ -1,11 +1,10 @@
-import { html, JDOM, JDOMComponent, CustomElement, state, computed } from 'jdomjs'
+import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
 import {Note} from "./Note.ts";
-import {guitarChordHighlightedHandler} from "../notes/guitarChordShapes.js";
+import {generateChordShape, guitarChordHighlightedHandler} from "../notes/guitarChordShapes.js";
 import Fretboard from "./Fretboard.js";
 import {playNote} from "../notes/note-tone.js";
-import {getMajorChord, getMinorChord, parseChord, ParsedChord} from "../notes/chords.js";
+import {getChord, parseChord, ParsedChord} from "../notes/chords.js";
 import Piano from "./Piano.js";
-import {getMajorScale, getMinorScale} from "../notes/scales.js";
 import Notation, {NotationNote} from "./Notation.js";
 
 
@@ -13,7 +12,7 @@ import Notation, {NotationNote} from "./Notation.js";
 export default class Chord extends Fretboard {
     rows = 4
 
-    selectedChord = 'G'
+    selectedChord = state('G')
 
     sound = state<'guitar-acoustic' | 'piano' | 'notation'>('guitar-acoustic')
 
@@ -25,21 +24,15 @@ export default class Chord extends Fretboard {
         super();
     }
 
-    setup() {
-        const chord = parseChord(this.selectedChord)
+    update() {
+        const chord = parseChord(this.selectedChord.value)
 
         const {handler, shift} = guitarChordHighlightedHandler(chord, { shape: this.chordShape.value })
         this.isHighlightedHandler = handler
         this.shift.value = shift
+        // this.isHighlightedHandler = generateChordShape(chord.fullName)
 
-        switch (chord.type) {
-            case 'MAJOR':
-                this.highlighted.value = getMajorChord(chord.baseNote)
-                break
-            case 'MINOR':
-                this.highlighted.value = getMinorChord(chord.baseNote)
-                break
-        }
+        this.highlighted.value = getChord(this.selectedChord.value, 2)
 
         if (this.chordShape.value === 'D' || chord.type === 'DIMINISHED') {
             this.rows = 5
@@ -48,6 +41,12 @@ export default class Chord extends Fretboard {
         }
 
         this.chord.value = chord
+    }
+
+    setup() {
+        super.setup()
+        this.update()
+        watch([this.selectedChord], () => this.update())
     }
 
     render(): Node | JDOM | string | undefined {
@@ -60,7 +59,7 @@ export default class Chord extends Fretboard {
                 ` 
                 : this.sound.value === 'piano' ? computed(() => html`
                     <div class="mb-2 pt-5">
-                        <${Piano} length=${12} hideNotes=${this.hideNotes} allShownNotes=${this.allShownNotes} highlighted=${this.highlighted} />
+                        <${Piano} length=${12 * 2} hideNotes=${this.hideNotes} allShownNotes=${this.allShownNotes} highlighted=${this.highlighted.value.map((n) => typeof n === 'string' ? n : [n[0], n[1]])} />
                     </div>`) 
                 : html`
                     <${Notation} width=${300} height=${230} notes=${[
@@ -89,13 +88,13 @@ export default class Chord extends Fretboard {
                     <button class="p-0.5 px-2" @click=${() => {
                         let t = 0;
                         let skip = true;
-                        ([...this.allShownNotes]).reverse().forEach(note => {
+                        ([...this.allShownNotes]).forEach(note => {
                             skip = !skip
                             if (skip) return;
                             setTimeout(() => {
                                 playNote(this.sound.value === 'notation' ? 'piano' : this.sound.value, note.note, note.octave, 1)
                             }, t)
-                            t += 10
+                            t += 20
                         })
                     }}>Play</button>
                 </div>

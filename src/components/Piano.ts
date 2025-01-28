@@ -1,5 +1,5 @@
-import { html, JDOM, JDOMComponent, CustomElement, state, computed } from 'jdomjs'
-import {getAfter, getAfterOctave, NotesType} from "../notes/notes.ts";
+import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
+import {getAfter, getAfterOctave, getAfterWithOctave, NotesType} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
 import {playNote} from "../notes/note-tone.js";
 
@@ -11,7 +11,7 @@ export default class Piano extends JDOMComponent {
 
     startingNote = state('C')
 
-    highlighted = state<string[]>([])
+    highlighted = state<string[]|any[][]>([])
     hideNotes = state<boolean>(false)
     isColored = state<boolean>(false)
 
@@ -19,18 +19,18 @@ export default class Piano extends JDOMComponent {
 
     allShownNotes: {note: NotesType, octave: number}[] = []
 
-
     renderKeys() {
         const a = []
 
         let keyRight = 0
         let lastOctave = 2
         for (let i = 0; i < this.length; i++) {
-            const currentNote = getAfter(this.startingNote.value, i)
-
+            const [currentNote] = getAfterWithOctave(this.startingNote.value, i, 1)
             const octave = getAfterOctave(this.startingNote.value, i, 1)
 
-            const isHighlighted = this.isHighlightedHandler ? this.isHighlightedHandler() :  this.highlighted.value.includes(currentNote)
+            const isHighlighted = this.isHighlightedHandler
+                ? this.isHighlightedHandler()
+                : (!!this.highlighted.value.filter(n => typeof n === 'string' ? n ===  currentNote : n[0] === currentNote && n[1] == octave).length)
 
             if (isHighlighted) {
                 this.allShownNotes.push({note: currentNote, octave})

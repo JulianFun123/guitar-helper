@@ -1,13 +1,13 @@
 import {Note} from "tone/build/esm/core/type/NoteUnits.js";
 
 export const NOTES = [
-    'A', 'A#',
-    'B',
     'C', 'C#',
     'D', 'D#',
     'E',
     'F', 'F#',
-    'G', 'G#'
+    'G', 'G#',
+    'A', 'A#',
+    'B',
 ] as const
 
 export const NOTE_NAMES = {
@@ -26,18 +26,18 @@ export const NOTE_NAMES = {
 }
 
 export const NOTE_COLORS = {
-    'A': ['bg-red-600', 'text-white'],
-    'A#': ['bg-red-400', 'text-white'],
-    'B': ['bg-blue-600', 'text-white'],
-    'C': ['bg-green-600', 'text-white'],
-    'C#': ['bg-green-400', 'text-white'],
-    'D': ['bg-yellow-600', 'text-white'],
-    'D#': ['bg-yellow-400', 'text-white'],
-    'E': ['bg-cyan-600', 'text-white'],
-    'F': ['bg-pink-600', 'text-white'],
-    'F#': ['bg-pink-400', 'text-white'],
-    'G': ['bg-indigo-600', 'text-white'],
-    'G#': ['bg-indigo-400', 'text-white'],
+    'A': ['!bg-red-600', '!text-white'],
+    'A#': ['!bg-red-400', '!text-white'],
+    'B': ['!bg-blue-600', '!text-white'],
+    'C': ['!bg-green-600', '!text-white'],
+    'C#': ['!bg-green-400', '!text-white'],
+    'D': ['!bg-yellow-600', '!text-white'],
+    'D#': ['!bg-yellow-400', '!text-white'],
+    'E': ['!bg-cyan-600', '!text-white'],
+    'F': ['!bg-pink-600', '!text-white'],
+    'F#': ['!bg-pink-400', '!text-white'],
+    'G': ['!bg-indigo-600', '!text-white'],
+    'G#': ['!bg-indigo-400', '!text-white'],
 }
 
 export type NotesType = typeof NOTES[number];
@@ -49,15 +49,33 @@ export const getAfterWithOctave = (key: string, addition: number, startingOctave
 
     while (newInd < 0) {
         newInd += 12
-        if (startingOctave) startingOctave--
+        startingOctave--
     }
 
     while (newInd > NOTES.length - 1) {
         newInd -= NOTES.length
-        if (startingOctave) startingOctave++
+        startingOctave++
     }
 
     return [NOTES[newInd], startingOctave] as [NotesType, number]
+}
+
+export const getAfterFullNote = (key: string, addition: number, octave = 2): [NotesType, number] => {
+    let outNote = key
+    for (let i = 0; i < addition; i++) {
+        const nextNote = getAfterWithOctave(key, i, octave)
+        if (nextNote[0].includes('#') && i !== addition) {
+            addition++
+            continue
+        }
+        if (nextNote[0] === 'C') octave++
+
+        outNote = nextNote[0]
+    }
+
+    console.log(octave)
+
+    return [outNote as NotesType, octave]
 }
 
 export const getAfter = (key: string, addition: number): NotesType => {
