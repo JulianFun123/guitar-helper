@@ -11,7 +11,13 @@ export default function ChordFinder() {
         parsed.value = parseChord(chordInput.value)
     }
 
-    watch([chordInput], () => update())
+    watch([chordInput], () => {
+        if (chordInput.value[0] && chordInput.value[0] === chordInput.value[0].toLowerCase()){
+            chordInput.value = `${chordInput.value[0].toUpperCase()}${chordInput.value.substring(1)}`
+        } else {
+            update()
+        }
+    })
     update()
 
     return html`

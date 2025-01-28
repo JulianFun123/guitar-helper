@@ -32,8 +32,8 @@ export const getChord = (chordString: string, startingOctave = 2) => {
 
     for (let extension of chord.extensions) {
         if (extension.type === 'TH') {
-            const [i, oin, inc] = jumpFind(scale, extension.value)
-            arr.push([NOTES[inc], scale[0][1] + oin])
+            const [i, oin, inc] = jumpFind(scale, extension.value-1)
+            arr.push([i[0], i[1] + oin])
         }
     }
 
