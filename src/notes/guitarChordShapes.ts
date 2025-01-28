@@ -67,25 +67,9 @@ export function guitarChordHighlightedHandler(chord: ParsedChord, { shift = 0, s
 
         if (shape === 'default') {
         } else {
-            if (chord.type === 'DIMINISHED') {
+            const indexOfNote = Math.abs(12 - NOTES.indexOf(shape as NotesType))
+            shift = (shift + indexOfNote > 12 ? shift - (12 - indexOfNote) : shift + indexOfNote)
 
-                switch (shape) {
-                    case 'A#':
-                        shift = shift - 2 > 0 ? shift - 1 : shift + 11;
-                        break;
-                }
-            } else {
-                switch (shape) {
-                    case 'A':
-                        break;
-                    case 'E':
-                        shift = shift - 7 > 0 ? shift - 7 : shift + 5;
-                        break;
-                    case 'D':
-                        shift = shift - 3 > 0 ? shift - 4 : shift + 8;
-                        break;
-                }
-            }
             chordShape = GUITAR_CHORD_SHAPES[chord.type]?.[shape]
         }
 
