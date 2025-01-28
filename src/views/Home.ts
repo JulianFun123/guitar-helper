@@ -52,6 +52,7 @@ export function Home() {
     watch([selectedType, selectedNote, hideNotes, selectedOutput], () => {
         savedParams.set('note', selectedNote.value);
         savedParams.set('type', selectedType.value);
+        savedParams.set('output', selectedOutput.value);
         saveParams();
         setHighlights()
     })
@@ -84,23 +85,25 @@ export function Home() {
         <div class="flex gap-5 justify-center">
             <div class="flex gap-2 items-center">
 
-                <select id="note" class="border rounded-md p-1" :bind=${selectedNote}>
-                    ${NOTES.map(n => html`<option value=${n}>${NOTE_NAMES[n]}</option>`)}
-                </select>
-                
-                <select id="type" id="type-select" class="border rounded-md p-1" :bind=${selectedType}>
-                    ${[
-                        ['MAJOR', 'Major'],
-                        ['MINOR', 'Minor'],
-                        ['DIMINISHED', 'Diminished'],
-                    ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
-                </select>
-                <select id="type" id="type-select" class="border rounded-md p-1" :bind=${selectedOutput}>
-                    ${[
-                        ['SCALE', 'Scale'],
-                        ['CHORD', 'Chord'],
-                    ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
-                </select>
+                <div class="border rounded-md">
+                    <select id="note" class="border-r p-1" :bind=${selectedNote}>
+                        ${NOTES.map(n => html`<option value=${n}>${NOTE_NAMES[n]}</option>`)}
+                    </select>
+                    
+                    <select id="type" id="type-select" class="border-r p-1" :bind=${selectedType}>
+                        ${[
+                            ['MAJOR', 'Major'],
+                            ['MINOR', 'Minor'],
+                            ['DIMINISHED', 'Diminished'],
+                        ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
+                    </select>
+                    <select id="type" id="type-select" class="p-1" :bind=${selectedOutput}>
+                        ${[
+                            ['SCALE', 'Scale'],
+                            ['CHORD', 'Chord'],
+                        ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
+                    </select>
+                </div>
             </div>
         </div>
         <div class="flex gap-5 justify-center">
@@ -144,7 +147,7 @@ export function Home() {
         <div class="flex gap-5 justify-center mb-3">
             <${Chord} selectedChord=${`${selectedNote.value}${selectedType.value === 'MINOR' ? 'm' : ''}`} hideNotes=${hideNotes} isColored=${isColored} />
         </div>
-    ` : null, [selectedNote, selectedType])}
+    ` : null, [selectedNote, selectedType, selectedOutput])}
     
     ${computed(() => selectedOutput.value === 'SCALE' ? html`
         <div class="flex flex-col justify-center gap-2">
