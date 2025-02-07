@@ -14,7 +14,9 @@ export const getFretboard = (tuning = ['E', 'A', 'D' ,'G', 'B', 'E'], length = 2
             }
         }
 
+
         const oct = Number((stOct) || [2, 2, 3, 3, 3, 4][i] || startingOctave)
+        note = note.replace(/[0-9]/g, "")
 
         return emptyArr.map((_, kI) => getAfterWithOctave(note, kI, oct))
     });

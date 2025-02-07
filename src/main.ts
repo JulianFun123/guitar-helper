@@ -18,7 +18,7 @@ export const INSTRUMENTS = [
     ['GUITAR_DROP_D', 'Guitar Drop C', 'C,G,C,F,A,D'],
     ['GUITAR_OPEN_D', 'Guitar Open D', 'D,A,D,F#,A,D'],
     ['GUITAR_OPEN_G', 'Guitar Open G', 'D,G,D,G,B,D'],
-    ['BASS', 'Bass', 'E,A,D,G'],
+    ['BASS', 'Bass', 'E0,A1,D1,G2'],
     ['BASS_5_STRING', 'Bass 5-string', 'B,E,A,D,G'],
     ['UKULELE', 'Ukulele', 'G,C,E,A'],
     ['VIOLIN', 'Violin', 'G,D,A,E'],
