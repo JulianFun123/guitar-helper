@@ -1,6 +1,7 @@
 import {getAfter, getAfterFullNote, getAfterWithOctave, NOTES, NotesType} from "./notes.ts";
 import {getMajorScale, getMinorScale, getScale, jumpFind} from "./scales.js";
 import Chord from "../components/Chord.js";
+import {isNumber} from "tone";
 
 const CHORD_TYPE_NOTES = {
     MAJOR: [0, 4, 7],
@@ -30,10 +31,15 @@ export const getChord = (chordString: string, startingOctave = 2) => {
 
     const arr = [jumpFind(scale, 0)[0], jumpFind(scale, 2)[0], jumpFind(scale, 4)[0]]
 
+    const addTh = (val: number) => {
+        const [i, oin, inc] = jumpFind(scale, val-1)
+        arr.push([i[0], i[1] + oin])
+    }
+
     for (let extension of chord.extensions) {
         if (extension.type === 'TH') {
-            const [i, oin, inc] = jumpFind(scale, extension.value-1)
-            arr.push([i[0], i[1] + oin])
+            if (extension.value === 9) addTh(7)
+            addTh(extension.value)
         }
     }
 
@@ -109,6 +115,8 @@ export function parseChord(chord: string): ParsedChord {
 
     let baseNote = [...NOTES].reverse().find(n => nextIsAndCall(n))
 
+    if (nextIs('#')) throw new Error(`${baseNote} cannot be sharp`)
+
     const types: [string[], ChordType][] = [
         [['major', 'maj', 'M'], 'MAJOR'],
         [['minor', 'min', 'Min', 'm'], 'MINOR'],
@@ -156,6 +164,8 @@ export function parseChord(chord: string): ParsedChord {
             }
         }
     }
+
+    if (noteParts.length > 0) throw new Error(`Unknown rest ${noteParts.join('')}`)
 
     return {
         baseNote,

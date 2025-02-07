@@ -36,6 +36,7 @@ export function useMetronome() {
             if (!isPlaying.value) return;
             playClick();
         }, intervalMs);
+        showGlobalMetronome.value = true
     }
 
     function stopMetronome() {
@@ -53,3 +54,6 @@ export function useMetronome() {
 
     return {bpm, stopMetronome, startMetronome, isPlaying}
 }
+
+export const showGlobalMetronome = state(false)
+export const globalMetronome = useMetronome()

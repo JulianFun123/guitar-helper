@@ -6,9 +6,15 @@ export default function ChordFinder() {
     const chordInput = state('Cm')
     const parsed = state<ParsedChord>(parseChord(chordInput.value))
 
+    const error = state<Error|null>(null)
 
     const update = () => {
-        parsed.value = parseChord(chordInput.value)
+        try {
+            parsed.value = parseChord(chordInput.value)
+            if (error.value) error.value = null;
+        } catch (e) {
+            error.value = e
+        }
     }
 
     watch([chordInput], () => {
@@ -23,9 +29,10 @@ export default function ChordFinder() {
     return html`
         <div class="flex flex-col items-center justify-center gap-2 h-full">
             <input :bind=${chordInput} type="text" class="text-center text-3xl border rounded-xl p-3" placeholder="Chord">
-            ${computed(() => html`
-                <span>Note: ${parsed.value.baseNote}, ${parsed.value.type}</span>
-            `, [parsed])}
+            
+            ${computed(() => error.value ? html`
+                <span class="text-red-500">${error.value.message}</span>
+            ` : html`<span>Note: ${parsed.value.baseNote}, ${parsed.value.type}</span>`, [parsed, error])}
             <${Chord}
                     selectedChord=${chordInput}
                     hideNotes

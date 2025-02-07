@@ -90,7 +90,7 @@ export function Home() {
             <div class="flex gap-2 items-center">
 
                 <div class="border rounded-md">
-                    <select id="note" class="border-r p-1" :bind=${selectedNote}>
+                    <select id="note" class="border-r p-1 rounded-l-md" :bind=${selectedNote}>
                         ${NOTES.map(n => html`<option value=${n}>${NOTE_NAMES[n]}</option>`)}
                     </select>
                     
@@ -101,7 +101,7 @@ export function Home() {
                             ['DIMINISHED', 'Diminished'],
                         ].map(([type, value]) => html`<option value=${type}>${value}</option>`)}
                     </select>
-                    <select id="type" id="type-select" class="p-1" :bind=${selectedOutput}>
+                    <select id="type" id="type-select" class="p-1 rounded-r-md" :bind=${selectedOutput}>
                         ${[
                             ['SCALE', 'Scale'],
                             ['CHORD', 'Chord'],

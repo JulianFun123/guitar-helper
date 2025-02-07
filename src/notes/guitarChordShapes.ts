@@ -61,7 +61,7 @@ export function guitarChordHighlightedHandler(chord: ParsedChord, { shift = 0, s
             if (chord.type === 'DIMINISHED') {
                 shape = 'A#'
             } else {
-                shape = getDistance('E', chord.baseNote) < getDistance('A', chord.baseNote) ? 'E' : 'A'
+                shape = getDistance('E', chord.baseNote) > getDistance('A', chord.baseNote) ? 'E' : 'A'
             }
         }
 

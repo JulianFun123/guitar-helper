@@ -6,6 +6,7 @@ import Notation from "./components/Notation.js";
 import ChordFinder from "./views/ChordFinder.js";
 import Router from "jdomjs/src/router/Router.js";
 import {Metronome} from "./components/Metronome.js";
+import {globalMetronome, showGlobalMetronome} from "./composables/useMetronome.js";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -251,17 +252,20 @@ html`
             </div>
 
             <div class="flex flex-col gap-2">
-                <div class="flex gap-2 items-center">
+                <div class="flex gap-2 items-center justify-between">
                     <label for="type">Instrument:</label>
                     <select id="type" class="border rounded-md p-1" :bind=${tuning}>
                         ${INSTRUMENTS.map(([type, value, tuning]) => html`<option value=${tuning}>${value}</option>`)}
                         <option value=${tuning}>Custom</option>
                     </select>
                 </div>
-                <div class="flex gap-2 items-center">
+                <div class="flex gap-2 items-center justify-between">
                     <label for="tuning">Tuning:</label>
                     <input id="tuning" class="border rounded-md p-1" :bind=${tuning}>
                 </div>
+                ${computed(() => showGlobalMetronome.value ? html`
+                    <${Metronome}  small />
+                ` : null)}
             </div>
         </div>
         <div class="overflow-auto">
