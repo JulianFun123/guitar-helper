@@ -76,7 +76,11 @@ export function Home() {
         
         <div class="overflow-auto max-w-full px-2">
             ${computed(() => html`
-                <${Fretboard} baseNotes=${tuning.value.split(',').map(r => r.trim())} highlighted=${highlightedNotes} hideNotes=${hideNotes} isColored=${isColored} />
+                <${Fretboard} 
+                    baseNotes=${tuning.value.split(',').map(r => r.trim())} 
+                    highlighted=${highlightedNotes} 
+                    hideNotes=${hideNotes} 
+                    isColored=${isColored} />
             `, [tuning])}
         </div>
     </div>

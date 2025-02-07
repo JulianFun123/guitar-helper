@@ -10,7 +10,7 @@ export default class Fretboard extends JDOMComponent {
     rows = 16
     baseNotes = ['E', 'A', 'D', 'G', 'B', 'E']
 
-    highlighted = state<string[]|any[][]>([])
+    highlighted = state<string[]|[NotesType, number][]>([])
     hideNotes = state<boolean>(false)
     isColored = state<boolean>(false)
 
