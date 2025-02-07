@@ -2,7 +2,7 @@ import { html } from "jdomjs";
 import {getAfter, NOTE_COLORS} from "../notes/notes.ts";
 import {playNote} from "../notes/note-tone.js";
 
-export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic', onClick = ({note, octave}) => null} = {}) {
+export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic', specific = {}, onClick = ({note, octave}, specific) => null} = {}) {
     const col = NOTE_COLORS[note]
 
     let noteText = note
@@ -18,7 +18,7 @@ export function Note(note: string, {isHighlighted = false, isColored = false, si
                 opacity: hide && !isHighlighted ? 0 : 1
             }}
             @click.cancel=${() => {
-                onClick({note, octave})
+                onClick({note, octave}, specific)
                 playNote(sound, note, octave, 3)
             }}
             title=${`Note ${note}, Octave: ${octave}`}

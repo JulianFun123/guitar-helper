@@ -7,6 +7,7 @@ import ChordFinder from "./views/ChordFinder.js";
 import Router from "jdomjs/src/router/Router.js";
 import {Metronome} from "./components/Metronome.js";
 import {globalMetronome, showGlobalMetronome} from "./composables/useMetronome.js";
+import {TabEditor} from "./views/TabEditor.js";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -63,6 +64,11 @@ export const router = new Router([
         path: '/metronome',
         name: 'metronome',
         view: () => Metronome()
+    },
+    {
+        path: '/tab-editor',
+        name: 'tab-editor',
+        view: () => TabEditor()
     },
     {
         path: '/notation',
@@ -224,6 +230,10 @@ const links = [
     {
         label: 'Metronome',
         route: '/metronome'
+    },
+    {
+        label: 'Tab-txt Editor',
+        route: '/tab-editor'
     },
 ]
 

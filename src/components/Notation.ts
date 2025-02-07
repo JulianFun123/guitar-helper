@@ -313,7 +313,18 @@ export default class Notation extends JDOMComponent {
                     : (a, b) =>  a[0] > b[0] ? 1 : -1)
 
                 let shift = false
-                scale.forEach(([n, oct]) => {
+                ;[...scale].sort(([aN, aO], [bN, bO]) => {
+                    //a[0] < b[0] ? 1 : -1
+
+                    if (aO === bO) {
+                        if (aN < bN) return 1
+                    } else {
+                        if (aO > bO) return -1; else return 1
+                    }
+
+
+                    return -1
+                }).forEach(([n, oct]) => {
                     if (spawnNote(n, this.clef === 'G' ? 5 : 3, 1, innerX + (shift ? 20 : 0), false, null, false, null, parsedScaleChord.cameFromb).annotation)
                         shift = !shift
                 })

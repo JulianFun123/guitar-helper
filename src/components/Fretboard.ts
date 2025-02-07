@@ -33,6 +33,9 @@ export default class Fretboard extends JDOMComponent {
         })
     }
 
+    colHeight = 34
+    colWidth = 80
+
     fretboardNote(note: NotesType, octave = 2, row: number, col: number) {
         return computed(() => {
             const isHighlighted = this.isHighlightedHandler
@@ -47,13 +50,14 @@ export default class Fretboard extends JDOMComponent {
             return html`
                 <div 
                     class="relative flex items-center justify-center border-r-1 border-transparent"
-                    style="height: 34px; width: 80px"
+                    style=${{height: `${this.colHeight}px`, width: `${this.colWidth}px`}}
                 >
                     ${Note(note, {
                         isHighlighted,
                         isColored: this.isColored.value,
                         hide: col === 0 ? false : this.hideNotes.value,
                         octave,
+                        specific: {col, row},
                         onClick: this.onNoteClick
                     })}
                 </div>
@@ -108,10 +112,10 @@ export default class Fretboard extends JDOMComponent {
                                 ${[...new Array(this.rows)].map((_, i) => html`
                                     <div class=${
                                         `flex items-center justify-center ${i === 0 ? '' : rI === 0 ? 'border-r border-b border-t' : 'border-r border-b'}`
-                                    } style="height: 34px; width: 80px">
+                                    } style=${{height: `${this.colHeight}px`, width: `${this.colWidth}px`}}>
                                         ${i ? this.spawnDot(rI, i) : null}
                                     </div>
-                                    ${i === 0 ? html`<div class="h-[34px] w-[6px] bg-black dark:bg-white" />` : ''}
+                                    ${i === 0 ? html`<div style=${{height: `${this.colHeight}px`}} class="w-[6px] bg-black dark:bg-white" />` : ''}
                                 `)}
                             </div>
                         `)}
