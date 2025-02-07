@@ -1,10 +1,11 @@
-import Router from "jdomjs/src/router/Router.js";
 import {computed, html, state, watch} from "jdomjs";
 import {Home} from "./views/Home.js";
 import {Tuner} from "./views/Tuner.js";
 import {CircleOfFifths} from "./views/CircleOfFifths.js";
 import Notation from "./components/Notation.js";
 import ChordFinder from "./views/ChordFinder.js";
+import Router from "jdomjs/src/router/Router.js";
+import {Metronome} from "./components/Metronome.js";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -56,6 +57,11 @@ export const router = new Router([
         path: '/chord-finder',
         name: 'chord-finder',
         view: () => ChordFinder()
+    },
+    {
+        path: '/metronome',
+        name: 'metronome',
+        view: () => Metronome()
     },
     {
         path: '/notation',
@@ -214,13 +220,17 @@ const links = [
         label: 'Chord Finder',
         route: '/chord-finder'
     },
+    {
+        label: 'Metronome',
+        route: '/metronome'
+    },
 ]
 
 html`
-    <div class="grid grid-cols-[280px_1fr] w-full h-full dark:text-white dark:bg-black">
-        <div class="border-r border-neutral-300 bg-neutral-50 dark:bg-black p-2 flex flex-col justify-between">
+    <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] w-full h-full dark:text-white dark:bg-black">
+        <div class="border-r border-neutral-300 bg-neutral-50 dark:bg-black p-2 flex-col justify-between hidden md:flex">
             <div>
-                <div class="mb-4 pt-2 px-3">
+                <div class="mb-4 pt-2 px-3 ">
                     <span class="text-lg">Guitar Helper</span>
                 </div>
                 

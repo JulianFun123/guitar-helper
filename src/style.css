@@ -14,3 +14,33 @@ body, html {
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+.slider {
+  -webkit-appearance: none;
+  -webkit-transition: .2s;
+  @apply border;
+  background: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+
+  cursor: pointer;
+  border-radius: 20px;
+  @apply bg-black dark:bg-white;
+}
+@media (prefers-color-scheme: dark) {
+  .slider::-webkit-slider-thumb {
+    @apply bg-white;
+  }
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #04AA6D;
+  cursor: pointer;
+  @apply bg-black dark:bg-white;
+}
