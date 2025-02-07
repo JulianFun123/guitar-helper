@@ -304,7 +304,7 @@ export default class Notation extends JDOMComponent {
             let scale = null
             let parsedScaleChord = null
             if (tact.scale) {
-
+                console.log(tact.scale)
                 parsedScaleChord = parseChord(tact.scale)
 
 

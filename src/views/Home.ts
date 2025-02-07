@@ -178,7 +178,11 @@ export function Home() {
                  :ref=${notationRef}
                  notes=${[
                     {
-                        scale: `${selectedNote.value}${selectedType.value}`,
+                        scale: `${selectedNote.value}${{
+                            MAJOR: '',
+                            MINOR: 'm',
+                            DIMINISHED: 'dim',
+                        }[selectedType.value]}`,
                         speed: [4, 4],
                         bpm: 60,
                         notes: getScale(selectedNote.value as NotesType, 4)?.map(([n, oct]) => ({

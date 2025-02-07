@@ -137,7 +137,7 @@ export function TabEditor() {
                 <div style="font-family: 'Space Mono'">
                     ${computed(() => cols.value.map((c, cIndex) => html`
                         <div class="mb-8">
-                            <input :bind=${c.information} type="text" class="min-w-full text-neutral-600" style=${{letterSpacing: `${letterGap*2}px`}}>
+                            <input :bind=${c.information} type="text" class="min-w-full text-neutral-600 dark:text-neutral-400" style=${{letterSpacing: `${letterGap*2}px`}}>
                             <div class="flex items-center">
 
                                 ${[tuning(), line()].map((l, i) => html`
@@ -159,7 +159,7 @@ export function TabEditor() {
                                     >
                                         ${l.map((cc, ccI) => html`
                                             <input
-                                                class=${`inp-${cIndex}-${i}-${ccI} select-all placeholder-black`}
+                                                class=${`inp-${cIndex}-${i}-${ccI} select-all placeholder-black dark:placeholder-white`}
                                                 style=${computed(() => ({
                                                     width: `${calcBarWidth(cIndex, i) + letterGap*2}px`,
                                                     padding: `0 ${letterGap}px`,
@@ -248,7 +248,7 @@ export function TabEditor() {
                                     </div>
                                 `), [c.bars])}
                                 
-                                <div class="border rounded-md p-2 ml-5 flex flex-col gap-2" :if=${computed(() => cIndex === selectedBarCol.value)}>
+                                <div class="border rounded-md p-2 ml-5 flex flex-col gap-2" :if=${computed(() => c.bars.value.length === 0 || cIndex === selectedBarCol.value, [selectedBarCol, c.bars])}>
                                     <button @click=${() => cols.value = cols.value.filter((_,ri)=> cIndex !== ri)}>Remove</button>
                                     <button @click=${addLine}>Add col</button>
                                 </div>

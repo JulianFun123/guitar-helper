@@ -118,8 +118,8 @@ export function parseChord(chord: string): ParsedChord {
     if (nextIs('#')) throw new Error(`${baseNote} cannot be sharp`)
 
     const types: [string[], ChordType][] = [
-        [['major', 'maj', 'M'], 'MAJOR'],
-        [['minor', 'min', 'Min', 'm'], 'MINOR'],
+        [['MAJOR','major', 'maj', 'Major', 'M'], 'MAJOR'],
+        [['MINOR','minor', 'min', 'Minor','Min', 'm'], 'MINOR'],
         [['dim', 'Dim'], 'DIMINISHED'],
         [['aug', 'Aug', '+'], 'AUGMENTED'],
     ];
