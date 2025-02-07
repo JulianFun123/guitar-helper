@@ -1,5 +1,5 @@
 import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
-import {getAfter, getAfterOctave, NotesType} from "../notes/notes.ts";
+import {getAfter, getAfterOctave, getAfterWithOctave, NotesType} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
 import {getFretboard} from "../notes/fretboardHelper.js";
 
@@ -64,17 +64,22 @@ export default class Fretboard extends JDOMComponent {
     fretboardRow(notes: string[], row: number) {
         return html`
             <div class="flex">
-                ${notes.map(([note, oct], i) => {
-                    if (i !== 0)
-                        i += this.shift.value ? this.shift.value - 1 : 0
-                    return this.fretboardNote(note as NotesType, Number(oct), row, i)
+                ${notes.map(([note, octstr], i) => {
+                    let oct = Number(octstr)
+                    
+                    if (i !== 0) {
+                        i += this.shift.value ? this.shift.value : 0;
+                        [note, oct] = getAfterWithOctave(note, this.shift.value, oct)
+                    }
+                    
+                    return this.fretboardNote(note as NotesType, oct, row, i)
                 })}
             </div>
         `
     }
 
     spawnDot(row: number, col: number) {
-        col += this.shift.value - 1
+        col += this.shift.value
         if (col === 0) return null;
         while (col > 12) col -= 12
 
@@ -113,8 +118,8 @@ export default class Fretboard extends JDOMComponent {
                     </div>
                 </div>
                 
-                <span class="absolute top-[-24px] left-[119px] opacity-60" style="transform: translateX(-50%)" :if=${computed(() => this.shift.value - 1 > 0)}>
-                    ${computed(() => this.shift.value)}fr
+                <span class="absolute top-[-24px] left-[119px] opacity-60" style="transform: translateX(-50%)" :if=${computed(() => this.shift.value > 0)}>
+                    ${computed(() => this.shift.value - 1)}fr
                 </span>
             </div>
         `

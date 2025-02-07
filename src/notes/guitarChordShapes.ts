@@ -68,7 +68,7 @@ export function guitarChordHighlightedHandler(chord: ParsedChord, { shift = 0, s
         if (shape === 'default') {
         } else {
             const indexOfNote = Math.abs(12 - NOTES.indexOf(shape as NotesType))
-            shift = (shift + indexOfNote > 12 ? shift - (12 - indexOfNote) : shift + indexOfNote)
+            shift = (shift + indexOfNote > 12 ? shift - (12 - indexOfNote) : shift + indexOfNote)+1
 
             chordShape = GUITAR_CHORD_SHAPES[chord.type]?.[shape]
         }
