@@ -7,6 +7,15 @@ export function useMetronome() {
     let intervalId = null;
     let audioBuffer = null;
 
+
+    const listeners = {
+        click: []
+    }
+
+    const addListener = (event: string, callback: Function) => {
+        listeners[event].push(callback)
+    }
+
     async function loadSound() {
         if (!audioBuffer) {
             const response = await fetch("/samples/metronome.mp3");
@@ -21,6 +30,7 @@ export function useMetronome() {
         source.buffer = audioBuffer;
         source.connect(audioContext.destination);
         source.start();
+        listeners.click.forEach((cb: Function) => cb())
     }
 
     function startMetronome() {
@@ -38,8 +48,6 @@ export function useMetronome() {
         if (bpmValue > 1000) {
             bpmValue = 1000
         }
-
-        console.log(bpmValue)
 
         const intervalMs = (60 / bpmValue) * 1000;
 
@@ -63,7 +71,7 @@ export function useMetronome() {
         }
     });
 
-    return {bpm, stopMetronome, startMetronome, isPlaying}
+    return {bpm, stopMetronome, startMetronome, isPlaying, addListener}
 }
 
 export const showGlobalMetronome = state(false)

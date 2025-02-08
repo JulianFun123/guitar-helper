@@ -4,11 +4,21 @@ import {globalMetronome, showGlobalMetronome, useMetronome} from "../composables
 export function Metronome({metronome = null, small = false}: {metronome?: any, small?: boolean} = {}) {
     const min = 20
     const max = 1000
-    const {stopMetronome, startMetronome, bpm, isPlaying} = metronome || globalMetronome
+    const {stopMetronome, startMetronome, bpm, isPlaying, addListener} = metronome || globalMetronome
 
     return html`
         <div @:detach=${() => metronome?.stopMetronome()} class="flex h-full w-full justify-center items-center">
-            <div class=${`flex flex-col items-center gap-6 border rounded-xl w-[30rem] max-w-full ${small ? 'p-3' : 'px-10 py-7'}`}>
+            <div 
+                class=${`flex flex-col items-center ring-neutral-400 gap-6 border rounded-xl w-[30rem] transition-all max-w-full ${small ? 'p-3' : 'px-10 py-7'}`}
+                :ref=${{value: (el) => addListener('click', () => {
+                    el.classList.add('ring-3')
+                    el.classList.add('ring-offset-2')
+                    setTimeout(() => {
+                        el.classList.remove('ring-3')
+                        el.classList.remove('ring-offset-2')
+                    }, 100)
+                })}}
+            >
                 <div class="flex w-full justify-between items-center">
                     <div class="flex items-end">
                         <input 
