@@ -19,14 +19,16 @@ export default class Piano extends JDOMComponent {
 
     allShownNotes: {note: NotesType, octave: number}[] = []
 
+    startingOctave = 1
+
     renderKeys() {
         const a = []
 
         let keyRight = 0
         let lastOctave = 2
         for (let i = 0; i < this.length; i++) {
-            const [currentNote] = getAfterWithOctave(this.startingNote.value, i, 1)
-            const octave = getAfterOctave(this.startingNote.value, i, 1)
+            const [currentNote] = getAfterWithOctave(this.startingNote.value, i, this.startingOctave)
+            const octave = getAfterOctave(this.startingNote.value, i, this.startingOctave)
 
             const isHighlighted = this.isHighlightedHandler
                 ? this.isHighlightedHandler()

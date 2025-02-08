@@ -8,6 +8,7 @@ import Router from "jdomjs/src/router/Router.js";
 import {Metronome} from "./components/Metronome.js";
 import {globalMetronome, showGlobalMetronome} from "./composables/useMetronome.js";
 import {TabEditor} from "./views/TabEditor.js";
+import {Midi} from "./views/Midi.js";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -69,6 +70,11 @@ export const router = new Router([
         path: '/tab-editor',
         name: 'tab-editor',
         view: () => TabEditor()
+    },
+    {
+        path: '/midi',
+        name: 'midi',
+        view: () => Midi()
     },
     {
         path: '/notation',
@@ -234,6 +240,10 @@ const links = [
     {
         label: 'Tab-txt Editor',
         route: '/tab-editor'
+    },
+    {
+        label: 'Midi Visualizer',
+        route: '/midi'
     },
 ]
 
