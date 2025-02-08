@@ -177,9 +177,10 @@ export function Home() {
                  lineHeight=${15} 
                  tactWidth=${100}
                  :ref=${notationRef}
+                 preferBs=${USING_Bs.includes(selectedChord.value)}
                  notes=${[
                     {
-                        // scale: 'Bb',
+                        //scale: selectedChord.value,
                         speed: [4, 4],
                         bpm: 60,
                         notes: getScale(selectedChord.value, 4)?.map(([n, oct]) => ({

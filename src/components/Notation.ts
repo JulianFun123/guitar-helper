@@ -47,6 +47,8 @@ export default class Notation extends JDOMComponent {
     hideBpm = false
     hideSpeed = false
 
+    preferBs = false
+
     constructor() {
         super();
     }
@@ -384,7 +386,7 @@ export default class Notation extends JDOMComponent {
                                     lastFlagBottom,
                                     true,
                                     scale?.map(k => k[0]) || null,
-                                    parsedScaleChord?.cameFromb || false
+                                    parsedScaleChord?.cameFromb || this.preferBs
                                 )
                                 lastFlagBottom = flagBottom
                                 lastConnected = connect
