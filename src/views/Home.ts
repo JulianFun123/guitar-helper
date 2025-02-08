@@ -6,11 +6,11 @@ import {
     getMajorChord,
     getMajorScaleChords,
     getMinorChord,
-    getMinorScaleChords
+    getMinorScaleChords, USING_Bs
 } from "../notes/chords.js";
 import Piano from "../components/Piano.js";
 import Fretboard from "../components/Fretboard.js";
-import {NOTE_NAMES, NOTES, NotesType} from "../notes/notes.js";
+import {NOTE_NAMES, NOTES, NotesType, toB} from "../notes/notes.js";
 import Chord from "../components/Chord.js";
 import {savedParams, saveParams, tuning} from "../main.js";
 import Notation from "../components/Notation.js";
@@ -27,6 +27,12 @@ export function Home() {
 
     const highlightedNotes = state([])
 
+    const selectedChord = computed(() =>  `${selectedNote.value}${{
+            MAJOR: '',
+            MINOR: 'm',
+            DIMINISHED: 'dim',
+        }[selectedType.value]}`
+    )
 
     const setHighlights = () => {
         const chord = buildChord({
@@ -173,14 +179,10 @@ export function Home() {
                  :ref=${notationRef}
                  notes=${[
                     {
-                        scale: `${selectedNote.value}${{
-                            MAJOR: '',
-                            MINOR: 'm',
-                            DIMINISHED: 'dim',
-                        }[selectedType.value]}`,
+                        // scale: 'Bb',
                         speed: [4, 4],
                         bpm: 60,
-                        notes: getScale(selectedNote.value as NotesType, 4)?.map(([n, oct]) => ({
+                        notes: getScale(selectedChord.value, 4)?.map(([n, oct]) => ({
                             type: 'note',
                             notes: [{
                                 note: n,

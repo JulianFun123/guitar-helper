@@ -10,6 +10,10 @@ const CHORD_TYPE_NOTES = {
     AUGMENTED: [0, 4, 8],
 } as const
 
+export const USING_Bs =[
+    'F', 'Bb', 'Eb', 'Ab', 'Db',
+    'Dm', 'Gm', 'Cm', 'Fm', 'Bbm'
+]
 
 export const getMajorChord = (key: string) => {
     return [
@@ -60,15 +64,7 @@ export const getMajorScaleChords = (key: NotesType) => {
 }
 export const getMinorScaleChords = (key: NotesType) => {
     const scaleNotes = getMinorScale(key).map(k => k[0])
-    console.log([
-        `${scaleNotes[0]}m`,
-        `${scaleNotes[1]}dim`,
-        `${scaleNotes[2]}`,
-        `${scaleNotes[3]}m`,
-        `${scaleNotes[4]}m`,
-        `${scaleNotes[5]}`,
-        `${scaleNotes[6]}`,
-    ])
+
     return [
         `${scaleNotes[0]}m`,
         `${scaleNotes[1]}dim`,

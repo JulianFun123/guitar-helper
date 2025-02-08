@@ -42,23 +42,34 @@ export const NOTE_COLORS = {
 
 export type NotesType = typeof NOTES[number];
 
-export const getAfterWithOctave = (key: string, addition: number, startingOctave = 2): [NotesType, number] => {
-    const ind = NOTES.findIndex(k => k === key)
+export const toB = (note: string, oct: number = 2) => {
+    // Eb C
+    [note, oct] = getAfterWithOctave(note, 1)
+    note = note.replace('#', '') + 'b'
+
+    return [note, oct]
+}
+
+export const getAfterWithOctave = (key: string, addition: number, startingOctave = 2, withoutSharps = false): [NotesType, number] => {
+    let availableNotes = withoutSharps ? NOTES.filter(n => n.length === 1) : NOTES
+
+    const ind = availableNotes.findIndex(k => k === key)
 
     let newInd = ind + addition
 
     while (newInd < 0) {
-        newInd += 12
+        newInd += availableNotes.length
         startingOctave--
     }
 
-    while (newInd > NOTES.length - 1) {
-        newInd -= NOTES.length
+    while (newInd > availableNotes.length - 1) {
+        newInd -= availableNotes.length
         startingOctave++
     }
 
-    return [NOTES[newInd], startingOctave] as [NotesType, number]
+    return [availableNotes[newInd], startingOctave] as [NotesType, number]
 }
+
 
 export const getAfterFullNote = (key: string, addition: number, octave = 2): [NotesType, number] => {
     let outNote = key
@@ -73,7 +84,6 @@ export const getAfterFullNote = (key: string, addition: number, octave = 2): [No
         outNote = nextNote[0]
     }
 
-    console.log(octave)
 
     return [outNote as NotesType, octave]
 }

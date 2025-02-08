@@ -29,14 +29,14 @@ export function CircleOfFifths() {
                 
                 ${notes.map((note, i) => html`
                     <div 
-                    class="absolute z-0 left-[50%] top-[50%] h-[4rem] gap-2 flex items-center justify-end" 
-                    style=${{
-                    width: 'calc(50% + 10.5rem)',
-                    transformOrigin: 'left',
-                    transform: `translateY(-50%) rotate(${calcRotation(i)}deg)`,
-                        zIndex: 1
-                }}
-                >
+                        class="absolute z-0 left-[50%] top-[50%] h-[4rem] gap-2 flex items-center justify-end" 
+                        style=${{
+                        width: 'calc(50% + 10.5rem)',
+                        transformOrigin: 'left',
+                        transform: `translateY(-50%) rotate(${calcRotation(i)}deg)`,
+                            zIndex: 1
+                        }}
+                    >
                     <div class="w-[2rem]">
                         <div class="group relative z-1 w-[30px] h-[30px]" style=${{rotate: `${0-calcRotation(i)}deg`}}>
                             <${Note(note[2])} />

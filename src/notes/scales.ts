@@ -31,10 +31,16 @@ export const getMinorScale = (key: NotesType, startingOctave = 2): [NotesType, n
     ]
 }
 
-export const getScale = (chord: string|ParsedChord, startingOctave = 2): [NotesType, number][] => {
+export const getScale = (chord: string|ParsedChord, startingOctave = 2, useBs = false): [NotesType, number][] => {
     const parsed = typeof chord === 'string' ? parseChord(chord) : chord
 
-    return SCALE_NOTES[parsed.type].map(n => getAfterWithOctave(parsed.baseNote, n, startingOctave))
+    if (useBs) {
+        return SCALE_NOTES[parsed.type]
+            .map(n => getAfterWithOctave(parsed.baseNote.replace('#', 'b'), n, startingOctave))
+    }
+
+    return SCALE_NOTES[parsed.type]
+        .map(n => getAfterWithOctave(parsed.baseNote, n, startingOctave))
 }
 
 export const jumpFind = (arr, addition, ind = 0) => {

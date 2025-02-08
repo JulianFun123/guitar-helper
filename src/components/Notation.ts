@@ -304,7 +304,6 @@ export default class Notation extends JDOMComponent {
             let scale = null
             let parsedScaleChord = null
             if (tact.scale) {
-                console.log(tact.scale)
                 parsedScaleChord = parseChord(tact.scale)
 
 
@@ -314,7 +313,7 @@ export default class Notation extends JDOMComponent {
 
                 let shift = false
                 ;[...scale].sort(([aN, aO], [bN, bO]) => {
-                    //a[0] < b[0] ? 1 : -1
+                    // return aO < bO ? 1 : -1
 
                     if (aO === bO) {
                         if (aN < bN) return 1
