@@ -1,5 +1,5 @@
 import {computed, html, state, watch} from "jdomjs";
-import {getMajorScale, getMinorScale, getScale} from "../notes/scales.js";
+import {getScale} from "../notes/scales.js";
 import {
     buildChord,
     ChordType, getChord,
@@ -12,14 +12,10 @@ import Piano from "../components/Piano.js";
 import Fretboard from "../components/Fretboard.js";
 import {NOTE_NAMES, NOTES, NotesType} from "../notes/notes.js";
 import Chord from "../components/Chord.js";
-import {INSTRUMENTS, savedParams, saveParams, tuning} from "../main.js";
+import {savedParams, saveParams, tuning} from "../main.js";
 import Notation from "../components/Notation.js";
 
 export function Home() {
-    const TYPES = ['MAJOR_SCALE', 'MINOR_SCALE', 'MAJOR_CHORD', 'MINOR_CHORD'] as const;
-
-    type TypeType = typeof TYPES[number];
-
     const selectedNote = state(savedParams.get('note') || 'C')
     const selectedType = state<ChordType>(savedParams.get('type') as ChordType || 'MAJOR')
     const selectedOutput = state(savedParams.get('output') || 'SCALE')
@@ -38,7 +34,6 @@ export function Home() {
             type: selectedType.value,
         })
 
-        console.log(chord)
         switch (selectedOutput.value) {
             case 'SCALE':
                 highlightedNotes.value = getScale(chord).map(n => n[0])
@@ -157,7 +152,7 @@ export function Home() {
         <div class="flex flex-col justify-center gap-2">
             <span class="text-center opacity-60">Compatible Chords:</span>
             <div class="flex gap-2 justify-center">
-                ${(selectedType.value === 'MINOR' ? getMajorScaleChords : getMinorScaleChords)(selectedNote.value as NotesType).map(([c]) => html`
+                ${(selectedType.value === 'MINOR' ? getMinorScaleChords : getMajorScaleChords)(selectedNote.value as NotesType).map((c) => html`
                     <div class="bg-neutral-100 dark:bg-neutral-800 px-1.5 rounded-md group relative">
                         <span class="relative  z-100">${c}</span>
                         
