@@ -2,7 +2,7 @@ import {computed, html, state, watch} from "jdomjs";
 import {parseChord, ParsedChord} from "../notes/chords.js";
 import Chord from "../components/Chord.js";
 
-export default function ChordFinder() {
+export function ChordFinder() {
     const chordInput = state('Cm')
     const parsed = state<ParsedChord>(parseChord(chordInput.value))
 

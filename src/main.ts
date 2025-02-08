@@ -1,14 +1,8 @@
 import {computed, html, state, watch} from "jdomjs";
-import {Home} from "./views/Home.js";
-import {Tuner} from "./views/Tuner.js";
-import {CircleOfFifths} from "./views/CircleOfFifths.js";
-import Notation from "./components/Notation.js";
-import ChordFinder from "./views/ChordFinder.js";
+import Notation from "./components/Notation.ts";
 import Router from "jdomjs/src/router/Router.js";
-import {Metronome} from "./components/Metronome.js";
-import {globalMetronome, showGlobalMetronome} from "./composables/useMetronome.js";
-import {TabEditor} from "./views/TabEditor.js";
-import {Midi} from "./views/Midi.js";
+import {showGlobalMetronome} from "./composables/useMetronome.ts";
+import {Metronome} from "./components/Metronome.ts";
 
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
@@ -44,37 +38,37 @@ export const router = new Router([
     {
         path: '/',
         name: 'home',
-        view: () => Home()
+        view: async () => (await import('./views/Home.js')).Home()
     },
     {
         path: '/tuner',
         name: 'tuner',
-        view: () => Tuner()
+        view: async () => (await import('./views/Tuner.js')).Tuner()
     },
     {
         path: '/circle-of-fifths',
         name: 'circle-of-fifths',
-        view: () => CircleOfFifths()
+        view: async () => (await import('./views/CircleOfFifths.js')).CircleOfFifths()
     },
     {
         path: '/chord-finder',
         name: 'chord-finder',
-        view: () => ChordFinder()
+        view: async () => (await import('./views/ChordFinder.ts')).ChordFinder()
     },
     {
         path: '/metronome',
         name: 'metronome',
-        view: () => Metronome()
+        view: async () => (await import('./components/Metronome.ts')).Metronome()
     },
     {
         path: '/tab-editor',
         name: 'tab-editor',
-        view: () => TabEditor()
+        view: async () => (await import('./views/TabEditor.ts')).TabEditor()
     },
     {
         path: '/midi',
         name: 'midi',
-        view: () => Midi()
+        view: async () => (await import('./views/Midi.ts')).Midi()
     },
     {
         path: '/notation',
