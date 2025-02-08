@@ -307,11 +307,11 @@ export default class Notation extends JDOMComponent {
                 parsedScaleChord = parseChord(tact.scale)
 
 
-                scale = getScale(parsedScaleChord, this.clef === 'G' ? 5 : 3).sort(parsedScaleChord.cameFromb ?
+                scale = getScale(parsedScaleChord, this.clef === 'G' ? 4: 3).sort(parsedScaleChord.cameFromb ?
                     ([a], [b]) =>  (a.includes('#') ? getAfter(a, 1) + 'b' : a) > (b.includes('#') ? getAfter(b, 1) + 'b' : b) ? 1 : -1
                     : (a, b) =>  a[0] > b[0] ? 1 : -1)
 
-                let shift = false
+                let shift = scale.filter(([n]) => n.includes('#')).length === 1
                 ;[...scale].sort(([aN, aO], [bN, bO]) => {
                     // return aO < bO ? 1 : -1
 
@@ -322,9 +322,21 @@ export default class Notation extends JDOMComponent {
                     }
 
 
-                    return -1
+                    return 1
                 }).forEach(([n, oct]) => {
-                    if (spawnNote(n, this.clef === 'G' ? 5 : 3, 1, innerX + (shift ? 20 : 0), false, null, false, null, parsedScaleChord.cameFromb).annotation)
+                    if (this.clef === 'G') {
+                        if (parsedScaleChord.cameFromb) {
+                            if (n <= 'B' || n > 'F') {
+                                oct = 4
+                            } else {
+                                oct = 5
+                            }
+                        } else {
+                            oct = 5
+                        }
+                    }
+
+                    if (spawnNote(n, oct, 1, innerX + (shift ? 20 : 0), false, null, false, null, parsedScaleChord.cameFromb).annotation)
                         shift = !shift
                 })
 
