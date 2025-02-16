@@ -1,11 +1,11 @@
-import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
+import {html, PulsComponent, CustomElement, state, computed, watch} from "pulsjs"
 import {getAfter, getAfterOctave, getAfterWithOctave, NotesType} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
 import {getFretboard} from "../notes/fretboardHelper.js";
 
 
 @CustomElement('gh-fretboard')
-export default class Fretboard extends JDOMComponent {
+export default class Fretboard extends PulsComponent {
 
     rows = 16
     baseNotes = ['E', 'A', 'D', 'G', 'B', 'E']
@@ -99,7 +99,7 @@ export default class Fretboard extends JDOMComponent {
         return null
     }
 
-    render(): Node | JDOM | string | undefined {
+    render()  {
         this.allShownNotes = []
         return html`
             <div class="relative w-fit">

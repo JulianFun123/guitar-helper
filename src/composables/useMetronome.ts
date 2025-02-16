@@ -1,4 +1,4 @@
-import {state, watch} from "jdomjs";
+import {state, watch} from "pulsjs";
 
 export function useMetronome() {
     let audioContext = new (window.AudioContext || globalThis.webkitAudioContext.webkitAudioContext!)();

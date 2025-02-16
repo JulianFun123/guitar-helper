@@ -1,4 +1,4 @@
-import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
+import {html, PulsComponent, CustomElement, state, computed, watch} from "pulsjs"
 import {Note} from "./Note.ts";
 import {generateChordShape, guitarChordHighlightedHandler} from "../notes/guitarChordShapes.js";
 import Fretboard from "./Fretboard.js";
@@ -49,7 +49,7 @@ export default class Chord extends Fretboard {
         watch([this.selectedChord], () => this.update())
     }
 
-    render(): Node | JDOM | string | undefined {
+    render()  {
         return html`
             ${computed(() => this.sound.value === 'guitar-acoustic' ?
                     html`

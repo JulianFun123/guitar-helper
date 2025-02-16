@@ -1,19 +1,18 @@
-import {computed, html, state, watch} from "jdomjs";
+import {computed, html, state, watch} from "pulsjs";
 import {getScale} from "../notes/scales.js";
 import {
     buildChord,
-    ChordType, getChord,
-    getMajorChord,
+    ChordType,
+    getChord,
     getMajorScaleChords,
-    getMinorChord,
     getMinorScaleChords, USING_Bs
 } from "../notes/chords.js";
 import Piano from "../components/Piano.js";
-import Fretboard from "../components/Fretboard.js";
 import {NOTE_NAMES, NOTES, NotesType, toB} from "../notes/notes.js";
 import Chord from "../components/Chord.js";
 import {savedParams, saveParams, tuning} from "../main.js";
 import Notation from "../components/Notation.js";
+import Fretboard from "../components/Fretboard.js";
 
 export function Home() {
     const selectedNote = state(savedParams.get('note') || 'C')
@@ -33,6 +32,8 @@ export function Home() {
             DIMINISHED: 'dim',
         }[selectedType.value]}`
     )
+
+    console.log(selectedNote.value)
 
     const setHighlights = () => {
         const chord = buildChord({
@@ -80,8 +81,9 @@ export function Home() {
                 <${Fretboard} 
                     baseNotes=${tuning.value.split(',').map(r => r.trim())} 
                     highlighted=${highlightedNotes} 
-                    hideNotes=${hideNotes} 
-                    isColored=${isColored} />
+                    hideNotes=${hideNotes}
+                    isColored=${isColored}
+                />
             `, [tuning])}
         </div>
     </div>

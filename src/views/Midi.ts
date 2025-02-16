@@ -1,4 +1,4 @@
-import {computed, html, state} from "jdomjs";
+import {computed, html, state} from "pulsjs";
 import {WebMidi} from 'webmidi'
 import Notation, {NotationNote} from "../components/Notation.js";
 import {NotesType} from "../notes/notes.js";

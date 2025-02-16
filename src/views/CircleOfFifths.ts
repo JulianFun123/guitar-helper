@@ -1,4 +1,4 @@
-import {html} from "jdomjs";
+import {html} from "pulsjs";
 import {Note} from "../components/Note.js";
 import Chord from "../components/Chord.js";
 import Notation from "../components/Notation.js";
@@ -39,7 +39,7 @@ export function CircleOfFifths() {
                     >
                     <div class="w-[2rem]">
                         <div class="group relative z-1 w-[30px] h-[30px]" style=${{rotate: `${0-calcRotation(i)}deg`}}>
-                            <${Note(note[2])} />
+                            ${Note(note[2])}
                         </div>
                     </div>
                     <div class="w-[2rem]">
@@ -49,7 +49,7 @@ export function CircleOfFifths() {
                     </div>
                     <div class="w-[2rem]">
                         <div class="group relative z-1 w-[30px] h-[30px]" style=${{rotate: `${0-calcRotation(i)}deg`}}>
-                            <${Note(note[0])} />
+                            ${Note(note[0])}
                         </div>
                     </div>
                         <div class="w-[5.5rem]">

@@ -1,11 +1,11 @@
-import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
+import {html, PulsComponent, CustomElement, state, computed, watch} from "pulsjs"
 import {getAfter, getAfterOctave, getAfterWithOctave, NotesType} from "../notes/notes.ts";
 import {Note} from "./Note.ts";
 import {playNote} from "../notes/note-tone.js";
 
 
 @CustomElement('gh-piano')
-export default class Piano extends JDOMComponent {
+export default class Piano extends PulsComponent {
 
     length = 12 * 3
 
@@ -92,7 +92,7 @@ export default class Piano extends JDOMComponent {
         return a
     }
 
-    render(): Node | JDOM | string | undefined {
+    render()  {
         return html`
             ${computed(() => html`
                 <div class="relative w-fit">

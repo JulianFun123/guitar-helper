@@ -1,4 +1,4 @@
-import {computed, html, state, watch} from "jdomjs";
+import {computed, html, state, watch} from "pulsjs";
 import Fretboard from "../components/Fretboard.js";
 import Notation, {NotationNote} from "../components/Notation.js";
 import {getFretboard} from "../notes/fretboardHelper.js";

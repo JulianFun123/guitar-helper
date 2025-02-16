@@ -1,4 +1,4 @@
-import { html } from "jdomjs";
+import { html } from "pulsjs";
 import {getAfter, NOTE_COLORS} from "../notes/notes.ts";
 import {playNote} from "../notes/note-tone.js";
 

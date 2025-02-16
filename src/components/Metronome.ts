@@ -1,4 +1,4 @@
-import { html, state, watch } from "jdomjs";
+import { html, state, watch } from "pulsjs";
 import {globalMetronome, showGlobalMetronome, useMetronome} from "../composables/useMetronome.js";
 
 export function Metronome({metronome = null, small = false}: {metronome?: any, small?: boolean} = {}) {

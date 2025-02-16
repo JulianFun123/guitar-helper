@@ -1,4 +1,4 @@
-import {state} from "jdomjs";
+import {state} from "pulsjs";
 
 export function useTuner() {
     // audio context to control audio input
@@ -13,7 +13,7 @@ export function useTuner() {
     // false if note was ignored
     let isConfident = false;
 
-    let sensitivity = 0.02; // default is 0.02
+    let sensitivity = 0.01; // default is 0.02
 
     // length of an octave which has 12 notes
     // in Western musical scale

@@ -1,4 +1,4 @@
-import {computed, html, state, watch} from "jdomjs";
+import {computed, html, state, watch} from "pulsjs";
 import {parseChord, ParsedChord} from "../notes/chords.js";
 import Chord from "../components/Chord.js";
 

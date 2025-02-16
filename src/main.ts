@@ -1,6 +1,6 @@
-import {computed, html, state, watch} from "jdomjs";
+import {appendTo, computed, html, state, watch} from "pulsjs";
+import { Router } from "pulsjs-router";
 import Notation from "./components/Notation.ts";
-import Router from "jdomjs/src/router/Router.js";
 import {showGlobalMetronome} from "./composables/useMetronome.ts";
 import {Metronome} from "./components/Metronome.ts";
 
@@ -43,7 +43,7 @@ export const router = new Router([
     {
         path: '/tuner',
         name: 'tuner',
-        view: async () => (await import('./views/Tuner.js')).Tuner()
+        view: async () => html`<${(await import('./views/Tuner.js')).Tuner} />`
     },
     {
         path: '/circle-of-fifths',
@@ -241,7 +241,7 @@ const links = [
     },
 ]
 
-html`
+appendTo(document.body, html`
     <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] w-full h-full dark:text-white dark:bg-black">
         <div class="border-r border-neutral-300 bg-neutral-50 dark:bg-black p-2 flex-col justify-between hidden md:flex">
             <div>
@@ -283,10 +283,10 @@ html`
             </div>
         </div>
         <div class="overflow-auto">
-            ${ router.view }
+            ${router.view}
         </div>
     </div>
-`.appendTo(document.body)
+`)
 
 router.init()
 

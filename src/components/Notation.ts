@@ -1,4 +1,4 @@
-import {html, JDOM, JDOMComponent, CustomElement, state, computed, watch} from 'jdomjs'
+import {html, PulsComponent, CustomElement, state, computed, watch} from "pulsjs"
 import {getAfter, getDistance, getMDistance, NotesType} from "../notes/notes.js";
 import {playNote} from "../notes/note-tone.js";
 import {getScale} from "../notes/scales.js";
@@ -28,7 +28,7 @@ export type NotationPart = {
 }
 
 @CustomElement('gh-notation')
-export default class Notation extends JDOMComponent {
+export default class Notation extends PulsComponent {
 
     notes: NotationPart[] = []
 
@@ -128,7 +128,7 @@ export default class Notation extends JDOMComponent {
     setup() {
     }
 
-    render(): Node | JDOM | string | undefined {
+    render()  {
         const listeners = []
         const center = this.height / 2
 
@@ -456,6 +456,6 @@ export default class Notation extends JDOMComponent {
             svgEl.querySelector(listener.el).addEventListener(listener.type, listener.callback)
         })
 
-        return svgEl
+        return [svgEl]
     }
 }
