@@ -17,8 +17,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.0",
     "jdomjs": "^3.1.17",
-    "pulsjs": "^1.0.13-prealpha",
-    "pulsjs-router": "^1.0.13-prealpha",
+    "pulsjs": "^1.0.14-prealpha",
+    "pulsjs-router": "^1.0.14-prealpha",
     "tailwindcss": "^4.0.0",
     "tone": "^15.0.4",
     "webmidi": "^3.1.12"

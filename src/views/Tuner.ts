@@ -24,7 +24,10 @@ export function Tuner() {
 
         let lastPos = [100, 50]
         for (const note of [...noteHistory.value].reverse()) {
-            const pos = [100 - (100 / historyLength) * s++, 50 - (note.deviation / 3)]
+            const pos = [
+                100 - (100 / historyLength) * s++,
+                50 - (note.deviation / 3)
+            ]
 
             out.push(`<line x1="${pos[0]}%" y1="${pos[1]}%" x2="${lastPos[0]}%" y2="${lastPos[1]}%" stroke="black"  class="dark:stroke-white" />`)
             lastPos = pos
@@ -34,7 +37,6 @@ export function Tuner() {
     }
 
     onUnmounted(() => {
-        console.log('unmounting')
         stop()
     })
 
@@ -50,7 +52,7 @@ export function Tuner() {
                                     svg.style.width = "100%";
                                     svg.style.height = "100%";
                                     
-                                    svg.innerHTML = `<svg  xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                                    svg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
                                         <defs>
                                             <linearGradient id="redgr" gradientTransform="rotate(90)">
                                               <stop offset="0%" stop-color="#FF000011" />
@@ -64,7 +66,7 @@ export function Tuner() {
                                         ${linePositions()}
                                     </svg>
                                     `
-                                    return svg
+                                    return html`${svg}`
                                 })}
                             </div>
                         </div>
