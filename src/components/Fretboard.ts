@@ -20,6 +20,7 @@ export default class Fretboard extends PulsComponent {
 
     allShownNotes: {note: NotesType, octave: number, row: number, col: number}[] = []
 
+    hideNoteNames = state(false)
 
     onNoteClick: (() => void)|undefined = undefined
 
@@ -58,7 +59,8 @@ export default class Fretboard extends PulsComponent {
                         hide: col === 0 ? false : this.hideNotes.value,
                         octave,
                         specific: {col, row},
-                        onClick: this.onNoteClick
+                        onClick: this.onNoteClick,
+                        hideName: this.hideNoteNames.value
                     })}
                 </div>
             `

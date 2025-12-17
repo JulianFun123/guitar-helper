@@ -3,7 +3,7 @@ import { Router } from "pulsjs-router";
 import Notation from "./components/Notation.ts";
 import {showGlobalMetronome} from "./composables/useMetronome.ts";
 import {Metronome} from "./components/Metronome.ts";
-
+import {GuitarBodyIcon, GuitarIcon} from "./components/icons/icons.js";
 
 export const savedParams = new URLSearchParams(window.location.hash.substring(1) || localStorage.getItem("settings"))
 
@@ -69,6 +69,16 @@ export const router = new Router([
         path: '/midi',
         name: 'midi',
         view: async () => (await import('./views/Midi.ts')).Midi()
+    },
+    {
+        path: '/exercises',
+        name: 'exercises',
+        view: async () => (await import('./views/exercises/Exercises.ts')).Exercises()
+    },
+    {
+        path: '/exercise/:name',
+        name: 'exercise',
+        view: async () => (await import('./views/exercises/Exercise.ts')).Exercise()
     },
     {
         path: '/notation',
@@ -213,31 +223,44 @@ export const router = new Router([
 const links = [
     {
         label: 'Scales & Chords',
-        route: '/'
+        route: '/',
+        icon: 'piano'
+    },
+    {
+        label: 'Exercises',
+        route: '/exercises',
+        icon: 'map-route'
     },
     {
         label: 'Tuner',
-        route: '/tuner'
+        route: '/tuner',
+        icon: 'gauge'
     },
     {
         label: 'Circle of Fifths',
-        route: '/circle-of-fifths'
+        route: '/circle-of-fifths',
+        icon: 'circle'
     },
     {
         label: 'Chord Finder',
-        route: '/chord-finder'
+        route: '/chord-finder',
+        icon: 'book-2'
     },
     {
         label: 'Metronome',
-        route: '/metronome'
+        route: '/metronome',
+        special: 'metronome',
+        icon: 'metronome'
     },
     {
         label: 'Tab-txt Editor',
-        route: '/tab-editor'
+        route: '/tab-editor',
+        icon: 'table'
     },
     {
         label: 'Midi Visualizer',
-        route: '/midi'
+        route: '/midi',
+        icon: 'radio'
     },
 ]
 
@@ -246,20 +269,31 @@ appendTo(document.body, html`
         <div class="border-r border-neutral-300 bg-neutral-50 dark:bg-black p-2 flex-col justify-between hidden md:flex">
             <div>
                 <div class="mb-4 pt-2 px-3 ">
-                    <span class="text-lg">Guitar Helper</span>
+                    <img src="/logo.svg" class="w-[8rem] dark:hidden block" />
+                    <img src="/logo-white.svg" class="w-[8rem] dark:block hidden" />
                 </div>
                 
                 <div>
                     ${computed(() =>links.map(l => html`
                         <a 
                             class=${[
-                                'p-2', 'px-3', 'block', 'rounded-md', 
+                                'p-2', 'px-3', 'block', 'rounded-md', 'flex', 'justify-between', 'items-center',
                                 'cursor-pointer', 'transition-all', 
                                 ...(router.currentRoute.value?.path === l.route ? ['bg-neutral-200', 'dark:bg-neutral-800'] : ['hover:bg-neutral-100', 'dark:hover:bg-neutral-900'])
                             ]}
-                           @click=${() => router.go(l.route)}
+                           @click.prevent=${() => router.go(l.route)} 
+                            href=${router.getPath(l.route)}
                         >
-                            ${l.label}
+                            <span class="flex gap-1 items-center">
+                                ${l.icon ? html`<i class=${`ti ti-${l.icon}`} />` : null}
+                                <span>${l.label}</span>
+                            </span>
+                            
+                            ${
+                                l.special === 'metronome' ? 
+                                    html`<button @click.stop.prevent=${() => showGlobalMetronome.value = true} class="opacity-70 text-sm">(open)</button>` 
+                                    : null
+                            }
                         </a>
                     `, [router.currentRoute]))}
                 </div>

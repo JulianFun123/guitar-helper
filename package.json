@@ -15,6 +15,7 @@
     "vite": "^6.0.5"
   },
   "dependencies": {
+    "@tabler/icons-webfont": "^3.32.0",
     "@tailwindcss/vite": "^4.0.0",
     "jdomjs": "^3.1.17",
     "pulsjs": "^1.0.14-prealpha",

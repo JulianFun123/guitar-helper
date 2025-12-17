@@ -1,6 +1,7 @@
 @import url(https://fonts.intera.dev/_/plus+jakarta+sans);
 @import url(https://fonts.intera.dev/_/space+mono);
 @import "tailwindcss";
+@import "@tabler/icons-webfont/dist/tabler-icons.css";
 
 @tailwind base;
 @tailwind components;
@@ -51,4 +52,12 @@ input, select, button {
   &:focus {
     @apply ring-2 ring-offset-1;
   }
+}
+
+.custom-icon {
+  display: inline-block;
+  width: 1em;   /* 1em = font-size of the parent */
+  height: 1em;  /* keep it square */
+  vertical-align: middle;
+  color: currentColor; /* ensures stroke takes parent's text color */
 }

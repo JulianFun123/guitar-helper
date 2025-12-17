@@ -2,7 +2,7 @@ import { html } from "pulsjs";
 import {getAfter, NOTE_COLORS} from "../notes/notes.ts";
 import {playNote} from "../notes/note-tone.js";
 
-export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic', specific = {}, onClick = ({note, octave}, specific) => null} = {}) {
+export function Note(note: string, {isHighlighted = false, isColored = false, size = 30, octave = 2, hide = false, sound='guitar-acoustic', specific = {}, onClick = ({note, octave}, specific) => null, hideName = false} = {}) {
     const col = NOTE_COLORS[note]
 
     let noteText = note
@@ -24,7 +24,7 @@ export function Note(note: string, {isHighlighted = false, isColored = false, si
             title=${`Note ${note}, Octave: ${octave}`}
         >
             <span class="font-600 block select-none" style=${{fontSize: `${size / 1.8}px`}}>
-                ${noteText}
+                ${hideName ? null : noteText}
             </span>
         </button>
     

@@ -19,6 +19,8 @@ export function useTuner() {
     // in Western musical scale
     const octaveLength = 12;
 
+    const loudness = state(0)
+
     // pitch is the same as frequency, just different names
     let pitch = state(0);
 
@@ -68,6 +70,7 @@ export function useTuner() {
             rms += val * val;
         }
         rms = Math.sqrt(rms / SIZE);
+        loudness.value = rms
         if (rms < sensitivity)
             // not enough signal
             // the note is ignored
@@ -249,5 +252,5 @@ export function useTuner() {
     }
 
 
-    return { selectedNote, note, noteHistory, historyLength, isStarted, deviation, init, stop }
+    return { selectedNote, note, noteHistory, historyLength, isStarted, deviation, init, stop, loudness }
 }

@@ -7,7 +7,7 @@ export function Metronome({metronome = null, small = false}: {metronome?: any, s
     const {stopMetronome, startMetronome, bpm, isPlaying, addListener} = metronome || globalMetronome
 
     return html`
-        <div @:detach=${() => metronome?.stopMetronome()} class="flex h-full w-full justify-center items-center">
+        <div class="flex h-full w-full justify-center items-center">
             <div 
                 class=${`flex flex-col items-center ring-neutral-400 gap-6 border rounded-xl w-[30rem] transition-all max-w-full ${small ? 'p-3' : 'px-10 py-7'}`}
                 :ref=${{value: (el) => addListener('click', () => {
